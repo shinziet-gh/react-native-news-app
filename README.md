@@ -1,4 +1,4 @@
-# radar
+# NewsApp
 
 A React Native news app with a Node.js backend that fetches and displays the latest news from the News API.
 
