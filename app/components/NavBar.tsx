@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { useResponsive } from '../hooks/UseResponsive';
 import { HStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 
 export default function NavigationBar(props: { handleClick: (arg0: string) => void; }) {    
     const [activeBtn, setActiveBtn] = useState('top-headlines');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { width } = useWindowDimensions();
-    const isMobile = width < 768;
+
+    //Get window dimensions
+    const { width, height, isMobile } = useResponsive();
 
     const tabs = [
         { key: 'top-headlines', label: 'Today\'s Headlines' },
