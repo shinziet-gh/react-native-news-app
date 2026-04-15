@@ -1,52 +1,98 @@
 import React, { useState } from 'react'
+import { useWindowDimensions } from 'react-native'
 import { HStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 
 export default function NavigationBar(props: { handleClick: (arg0: string) => void; }) {    
-    
-    const [activeBtn, setActiveBtn] = useState('newsfeed');
+    const [activeBtn, setActiveBtn] = useState('top-headlines');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { width } = useWindowDimensions();
+    const isMobile = width < 768;
 
     const tabs = [
-    { key: 'top-headlines', label: 'Top News' },
-    { key: 'tech', label: 'Technology' },
-    { key: 'business', label: 'Business' },
-    { key: 'health', label: 'Health' },
-    { key: 'sports', label: 'Sports' },
+        { key: 'top-headlines', label: 'Today\'s Headlines' },
+        { key: 'tech', label: 'Technology' },
+        { key: 'business', label: 'Business' },
+        { key: 'health', label: 'Health' },
+        { key: 'sports', label: 'Sports' },
     ];
 
-    return (
-        <HStack
-        bg="$gray100"
-        px="$3"
-        py="$2"
-        borderRadius="$xl"
-        alignItems="center"
-        width="$full"
-        >
-        {tabs.map((tab) => {
-            const isActive = activeBtn === tab.key;
+    const handleTabPress = (tabKey: string) => {
+        setActiveBtn(tabKey);
+        props.handleClick(tabKey);
+        if (isMobile) {
+            setIsMenuOpen(false);
+        }
+    };
 
-            return (
-            <Pressable
-                key={tab.key}
-                flex={1}
-                onPress={() => {
-                setActiveBtn(tab.key);
-                props.handleClick(tab.key);
-                }}
-                borderRadius="$lg"
-                bg={isActive ? '#0077E6' : 'transparent'}
+    return (
+        <Box bg="white" width="$full">
+            <HStack
+                alignItems="center"
+                justifyContent="space-between"
             >
-                <Box py="$3" alignItems="center">
-                <Text
-                    color={isActive ? 'white' : '$coolGray600'}
-                    fontWeight={isActive ? '600' : '400'}
-                >
-                    {tab.label}
-                </Text>
-                </Box>
-            </Pressable>
-            );
-        })}
-        </HStack>
+                {isMobile ? (
+                    <Pressable
+                        px="$3"
+                        py="$2"
+                        bg="$gray200"
+                        borderRadius="$md"
+                        onPress={() => setIsMenuOpen((prev) => !prev)}
+                    >
+                        <Text fontWeight="600">{isMenuOpen ? 'Close' : 'Menu'}</Text>
+                    </Pressable>
+                ) : null}
+            </HStack>
+
+            {isMobile ? (
+                isMenuOpen ? (
+                    <Box px="$2" pb="$3" bg="$gray100">
+                        {tabs.map((tab) => {
+                            const isActive = activeBtn === tab.key;
+                            return (
+                                <Pressable
+                                    key={tab.key}
+                                    onPress={() => handleTabPress(tab.key)}
+                                    bg={isActive ? 'black' : 'transparent'}
+                                    mb="$2"
+                                >
+                                    <Box py="$3" px="$3">
+                                        <Text
+                                            color={isActive ? 'white' : '$coolGray600'}
+                                            fontWeight={isActive ? '600' : '400'}
+                                        >
+                                            {tab.label}
+                                        </Text>
+                                    </Box>
+                                </Pressable>
+                            );
+                        })}
+                    </Box>
+                ) : null
+            ) : (
+                <HStack bg="$gray100" alignItems="center" width="$full">
+                    {tabs.map((tab) => {
+                        const isActive = activeBtn === tab.key;
+
+                        return (
+                            <Pressable
+                                key={tab.key}
+                                flex={1}
+                                onPress={() => handleTabPress(tab.key)}
+                                bg={isActive ? 'black' : 'transparent'}
+                            >
+                                <Box py="$3" alignItems="center">
+                                    <Text
+                                        color={isActive ? 'white' : '$coolGray600'}
+                                        fontWeight={isActive ? '600' : '400'}
+                                    >
+                                        {tab.label}
+                                    </Text>
+                                </Box>
+                            </Pressable>
+                        );
+                    })}
+                </HStack>
+            )}
+        </Box>
     )
 }
