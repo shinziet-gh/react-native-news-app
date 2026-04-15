@@ -1,7 +1,7 @@
 {
-  "name": "project-template",
+  "name": "Read Latest News",
   "main": "expo-router/entry",
-  "description": "project template.",
+  "description": "React Native news app built with NewsAPI.",
   "license": "0BSD",
   "version": "52.0.41",
   "scripts": {

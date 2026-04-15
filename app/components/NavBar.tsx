@@ -6,8 +6,11 @@ export default function NavigationBar(props: { handleClick: (arg0: string) => vo
     const [activeBtn, setActiveBtn] = useState('newsfeed');
 
     const tabs = [
-    { key: 'newspage', label: 'News Feed' },
-    { key: 'favpage', label: 'Fav Article' },
+    { key: 'top-headlines', label: 'Top News' },
+    { key: 'tech', label: 'Technology' },
+    { key: 'business', label: 'Business' },
+    { key: 'health', label: 'Health' },
+    { key: 'sports', label: 'Sports' },
     ];
 
     return (
