@@ -1,12 +1,19 @@
 import React from 'react'
-import { Box, Pressable, Text, HStack, VStack, Image } from "@gluestack-ui/themed";
+import { Box, Pressable } from "@gluestack-ui/themed";
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
+import { useResponsive } from '../hooks/UseResponsive';
+import NewsComponent from './NewsComponent';
 
 export default function NewsPage({category}: { category: string }) {
 
+    //Const state to store news articles
     const [newsArticles, setNewsArticles] = useState([]);
+    const [headlineStory, setHeadlineStory] = useState([]);
 
+    //Get window dimensions
+    const { width, height, isMobile } = useResponsive();
+    
     //Async function to fetch news articles based on the category
     const fetchNews = async () => {
             try {
@@ -14,16 +21,17 @@ export default function NewsPage({category}: { category: string }) {
                 const apiUrl = category ? `http://localhost:3000/api/news:category=${category}` : 'http://localhost:3000/api/news/top-headlines';
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                setNewsArticles(data.articles);
+                setHeadlineStory(data.articles[0]);
+                setNewsArticles(data.articles.slice(1)); // Set the rest of the articles as newsArticles
             } catch (error) {
                 console.error(error);
-
             }
         };
 
     useEffect(() => {
         fetchNews();
         console.log('Fetched news articles:', newsArticles);
+        console.log('Fetched headline story:', headlineStory);
     }, [category]); // Call useEffect whenever the category changes
 
     const handleClick = (urlLink: string) => {
@@ -31,62 +39,15 @@ export default function NewsPage({category}: { category: string }) {
     }
 
     return (
-        <Box flex={1} px="$4">
+        <Box px="$4">
+        <NewsComponent news={headlineStory} isHeadlineStory={true} />
         {newsArticles.map((news, index) => (
             <Pressable
             key={news.url || index}
             onPress={() => handleClick(news.url)}
             my="$2"
             >
-            <HStack
-                space="md"
-                p="$3"
-                borderRadius="$xl"
-                backgroundColor="$white"
-                shadowColor="$black"
-                shadowOpacity={0.1}
-                shadowRadius={6}
-                elevation={3}
-                alignItems="center"
-            >
-                
-                {/* LEFT IMAGE */}
-                {news.urlToImage ? (
-                <Image
-                    source={{ uri: news.urlToImage }}
-                    alt="news image"
-                    style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 12,
-                    }}
-                />
-                ) : (
-                <Box
-                    width={80}
-                    height={80}
-                    borderRadius="$lg"
-                    backgroundColor="$gray200"
-                />
-                )}
-
-                {/* RIGHT CONTENT */}
-                <VStack flex={1} space="xs">
-                <Text bold fontSize="$sm" numberOfLines={2}>
-                    {news.title}
-                </Text>
-
-                <Text fontSize="$xs" color="$gray600">
-                    {news.author || "Unknown"} •{" "}
-                    {new Date(news.publishedAt).toLocaleDateString()}
-                </Text>
-
-                <Text fontSize="$xs" color="$gray700" numberOfLines={2}>
-                    {news.description}
-                </Text>
-                </VStack>
-
-            </HStack>
+            <NewsComponent news={news} isHeadlineStory={false} />
             </Pressable>
         ))}
         </Box>
