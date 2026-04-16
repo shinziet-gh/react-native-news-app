@@ -25,7 +25,7 @@ export default function Index() {
   return (
     <View style={{ flex: 1 }}>
       {/* NAVIGATION BAR */}
-      <HStack justifyContent='space-evenly' backgroundColor='white' px="$12" py="$2" marginTop="$5" marginHorizontal="$5" alignItems='center'>
+      <HStack justifyContent='space-evenly' backgroundColor='white' px="$12" py="$2" m="$5" alignItems='center'>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
           <Text bold fontSize="$xl"> DailyNews</Text>
         </Box>
@@ -42,7 +42,7 @@ export default function Index() {
 
       {/* MAIN CONTENT */}
       <ScrollView style={{ flex: 1 }}>
-        <HStack style={{ padding: 20 }}>
+        <HStack px="$5">
           <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
             <LeftPanel />
           </Box>
