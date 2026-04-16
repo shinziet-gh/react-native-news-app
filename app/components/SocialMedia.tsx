@@ -4,15 +4,15 @@ import { FacebookIcon, XIcon, WhatsappIcon, InstagramIcon } from './Icons'
 
 export default function SocialMedia() {
     const socialIcons = [FacebookIcon, XIcon, WhatsappIcon, InstagramIcon];
-    
+
     return (
-        <Box bg="white" width="$full">
-            <Box my="$2" flexDirection='row' alignItems='center' justifyContent='center'>
-                    {socialIcons.map((icon, index) => 
-                        <Button mx="$3" px="$3" size="xl" key={index}>
-                            <ButtonIcon as={icon}></ButtonIcon>
-                        </Button>
-                    )}
+        <Box bg="white">
+            <Box flexDirection='row' py="$1" gap="$2" >
+                {socialIcons.map((icon, index) =>
+                    <Button px="$4" size="xl" key={index} bg="black" >
+                        <ButtonIcon as={icon} size="md"></ButtonIcon>
+                    </Button>
+                )}
             </Box>
         </Box>
     )
