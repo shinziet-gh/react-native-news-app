@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, ScrollView, useWindowDimensions } from "react-native";
+import { View, ScrollView } from "react-native";
 import NavigationBar from './components/NavigationBar';
 import SocialMedia from './components/SocialMedia';
 import NewsPage from './components/NewsPage';
@@ -43,16 +43,24 @@ export default function Index() {
       {/* MAIN CONTENT */}
       <ScrollView style={{ flex: 1 }}>
         <HStack px="$5">
-          <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
+          {/* LEFT CONTAINER */}
+          <Box shadowOpacity={0.1} shadowRadius={6} style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
             <LeftPanel />
           </Box>
+          {/* MIDDLE VIEW */}
           <Box style={{ flex: 2 }}>
             <NewsPage category={page} />
           </Box>
-          <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
+          {/* RIGHT CONTAINER */}
+          <Box shadowOpacity={0.1} shadowRadius={6} style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
             <RightPanel />
           </Box>
         </HStack>
+
+        {/* FOOTER */}
+        <View style={{ backgroundColor: 'black', height: height * 0.2, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, marginTop: 20 }}>
+          <Text fontSize="$sm" color="white">© 2026 DailyNews. All rights reserved.</Text>
+        </View>
       </ScrollView>
 
     </View>

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 
-export default function NewsPage({category}: { category: string }) {
+export default function NewsPage({ category }: { category: string }) {
 
     //Const state to store news articles
     const [newsArticles, setNewsArticles] = useState([]);
@@ -13,20 +13,20 @@ export default function NewsPage({category}: { category: string }) {
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
-    
+
     //Async function to fetch news articles based on the category
     const fetchNews = async () => {
-            try {
-                console.log('Category:', category);
-                const apiUrl = category ? `http://localhost:3000/api/news:category=${category}` : 'http://localhost:3000/api/news/top-headlines';
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                setHeadlineStory(data.articles[0]);
-                setNewsArticles(data.articles.slice(1)); // Set the rest of the articles as newsArticles
-            } catch (error) {
-                console.error(error);
-            }
-        };
+        try {
+            console.log('Category:', category);
+            const apiUrl = category ? `http://localhost:3000/api/news:category=${category}` : 'http://localhost:3000/api/news/top-headlines';
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            setHeadlineStory(data.articles[0]);
+            setNewsArticles(data.articles.slice(1)); // Set the rest of the articles as newsArticles
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         fetchNews();
@@ -40,16 +40,17 @@ export default function NewsPage({category}: { category: string }) {
 
     return (
         <Box px="$4">
-        <NewsComponent news={headlineStory} isHeadlineStory={true} />
-        {newsArticles.map((news, index) => (
-            <Pressable
-            key={news.url || index}
-            onPress={() => handleClick(news.url)}
-            my="$2"
-            >
-            <NewsComponent news={news} isHeadlineStory={false} />
-            </Pressable>
-        ))}
+            <NewsComponent news={headlineStory} isHeadlineStory={true} />
+            {newsArticles.map((news, index) => (
+                <Pressable
+                    key={news.url || index}
+                    onPress={() => handleClick(news.url)}
+                    my="$4"
+                    marginBottom={0}
+                >
+                    <NewsComponent news={news} isHeadlineStory={false} />
+                </Pressable>
+            ))}
         </Box>
     )
 }

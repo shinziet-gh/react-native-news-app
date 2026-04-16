@@ -10,7 +10,6 @@ export default function NewsComponent({ news, isHeadlineStory }: { news: object;
         <HStack
             space="md"
             p="$3"
-            borderRadius="$xl"
             backgroundColor="$white"
             shadowColor="$black"
             shadowOpacity={0.1}
@@ -28,7 +27,7 @@ export default function NewsComponent({ news, isHeadlineStory }: { news: object;
                 />
             </Box>
 
-            {/* RIGHT CONTENT */}
+            {/* TITLE AND DESCRIPTION */}
             <VStack flex={1} alignSelf="stretch" px="$3" py="$3" space='xl' justifyContent='flex-start' >
                 <Text
                     bold
@@ -52,6 +51,7 @@ export default function NewsComponent({ news, isHeadlineStory }: { news: object;
                     {news.description}
                 </Text>
 
+                {/* READ MORE BUTTON */}
                 <Button size="lg" w={isHeadlineStory ? "$2/5" : "$1/4"} alignSelf="flex-end" marginTop={'auto'} bg="black" >
                     <Text color='white'>Read More</Text>
                 </Button>
