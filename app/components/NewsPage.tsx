@@ -30,8 +30,8 @@ export default function NewsPage({ category }: { category: string }) {
 
     useEffect(() => {
         fetchNews();
-        console.log('Fetched news articles:', newsArticles);
-        console.log('Fetched headline story:', headlineStory);
+        //console.log('Fetched news articles:', newsArticles);
+        //console.log('Fetched headline story:', headlineStory);
     }, [category]); // Call useEffect whenever the category changes
 
     const handleClick = (urlLink: string) => {
