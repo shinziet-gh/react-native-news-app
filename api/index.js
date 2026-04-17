@@ -19,18 +19,6 @@ sevenDaysAgo.setDate(today.getDate() - 7);
 const fromDate = sevenDaysAgo.toISOString().split('T')[0];
 const toDate = today.toISOString().split('T')[0];
 
-//News Sources
-const newsSources = [
-    'the-guardian',
-    'the-wall-street-journal',
-    'the-new-york-times',
-    'al-jazeera-english',
-    'google-news',
-    'time',
-    'the-economist',
-    'financial-times',
-];
-
 // Initialize News API key from environment variable
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 
@@ -78,29 +66,27 @@ app.get('/api/news:category=sports', (req, res) => {
     });
 });
 
-//To query /v2/top-headlines by popularity
+//To query /v2/top-headlines
 app.get('/api/news/top-headlines', (req, res) => {
     newsapi.v2.topHeadlines({
-    country: 'us',
-    pageSize: 10,
+        country: 'us',
+        pageSize: 10,
     }).then(response => {
-    console.log(response);
-    res.json(response);
+        console.log(response);
+        res.json(response);
     });
 });
 
-//To query /v2/everything by published date
-app.get('/api/news/latest', (req, res) => {
-    newsapi.v2.everything({
-    language: 'en',
-    sources: newsSources.join(','),
-    pageSize: 10,
-    sortBy: 'publishedAt',
-    from: fromDate,
-    to: toDate,
+//To query /v2/top-headlines by category
+app.get('/api/news/category=:category', (req, res) => {
+    const category = req.params.category;
+    newsapi.v2.topHeadlines({
+        category: category,
+        language: 'en',
+        pageSize: 5,
     }).then(response => {
-    console.log(response);
-    res.json(response);
+        console.log(response);
+        res.json(response);
     });
 });
 
