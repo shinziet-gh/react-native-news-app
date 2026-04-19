@@ -83,12 +83,25 @@ app.get('/api/news/category=:category', (req, res) => {
     newsapi.v2.topHeadlines({
         category: category,
         language: 'en',
-        pageSize: 5,
+        pageSize: 3,
     }).then(response => {
         console.log(response);
         res.json(response);
     });
 });
+
+//To query /v2/everything by published date
+app.get('/api/news/newest', (req, res) => {
+    newsapi.v2.everything({
+        pageSize: 3,
+        sortBy: 'publishedAt',
+        sources: 'wired, cnn, bbc-news',
+    }).then(response => {
+        console.log(response);
+        res.json(response);
+    })
+});
+
 
 // Run the server
 app.listen(port, () => {
