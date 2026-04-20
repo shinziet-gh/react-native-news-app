@@ -4,7 +4,7 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 
 ## Technology Stack
 
-- **React Native** — mobile frontend
+- **React Native** — frontend
 - **Node.js** — backend server
 - **News API** — news content via REST API
 
