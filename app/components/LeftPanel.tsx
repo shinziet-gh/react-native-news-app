@@ -66,40 +66,36 @@ export default function LeftPanel() {
 
             {latestNews.map((news, index) => (
                 <Pressable key={news.url || index} onPress={() => handleClick(news.url)}>
-                    <HStack flex={1} alignItems='center' shadowColor="$black"
-                        shadowOpacity={0.1}
-                        shadowRadius={12}>
-                        <Text flex={0.1} fontWeight={100} bold fontSize="$2xl" textAlign='center'>{index + 1}.</Text>
-                        <Box flex={1}>
-                            <Image
-                                source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                                alt="news image"
-                                w="$full"
-                                h="$full"
-                                aspectRatio={16 / 9}
-                                resizeMode="contain"
-                                backgroundColor='black'
-                            />
+                    <Image
+                        source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                        alt="news image"
+                        w="$full"
+                        h="$full"
+                        aspectRatio={3 / 3}
+                        resizeMode="contain"
+                        backgroundColor='black'
+                    />
 
-                            <HStack
-                                gap="$3"
-                                pl="$1"
-                                pb="$3"
-                                justifyContent='flex-start'
-                            >
+                    <HStack
+                        gap="$3"
+                        pl="$1"
+                        pb="$3"
+                        position="absolute"
+                        bottom="$3"
+                        left="$3"
+                        right="$3"
+                    >
 
-                                <VStack w="$full" gap="$3" >
-                                    <Text bold fontSize="$2xl" marginRight="$12">
-                                        {news.title}
-                                    </Text>
-                                    <Text>
-                                        {news.source?.name || "Unknown"} • {" "}
-                                        {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
-                                    </Text>
-                                </VStack>
+                        <VStack w="$full" gap="$3" >
+                            <Text bold color='white' fontSize="$2xl" marginRight="$12">
+                                {news.title}
+                            </Text>
+                            <Text color='white'>
+                                {news.source?.name || "Unknown"} • {" "}
+                                {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                            </Text>
+                        </VStack>
 
-                            </HStack>
-                        </Box>
                     </HStack>
                 </Pressable>
             )
@@ -131,16 +127,15 @@ export default function LeftPanel() {
                                     resizeMode="contain"
                                     backgroundColor='#525252'
                                 />
-
-                                <Text color="$gray600">
-                                    {news.source?.name || "Unknown"} • {" "}
-                                    {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
-                                </Text>
                                 <Text
                                     bold
                                     fontSize={"$2xl"}
                                 >
                                     {news.title}
+                                </Text>
+                                <Text color="$gray600">
+                                    {news.source?.name || "Unknown"} • {" "}
+                                    {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
                                 </Text>
                             </Pressable>
                         </VStack >
