@@ -46,8 +46,8 @@ export default function LeftPanel() {
     }
 
     useEffect(() => {
-        categories.forEach(category => fetchNewsByCategory(category));
-        fetchLatestNews();
+        //categories.forEach(category => fetchNewsByCategory(category));
+        //fetchLatestNews();
     }, []);
 
     const handleClick = (urlLink: string) => {
