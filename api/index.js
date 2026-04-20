@@ -95,7 +95,7 @@ app.get('/api/news/newest', (req, res) => {
     newsapi.v2.everything({
         pageSize: 3,
         sortBy: 'publishedAt',
-        sources: 'wired, cnn, bbc-news',
+        sources: 'wired, cnn, nbc-news',
     }).then(response => {
         console.log(response);
         res.json(response);
