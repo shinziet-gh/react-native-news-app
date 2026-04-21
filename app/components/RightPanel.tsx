@@ -55,6 +55,17 @@ export default function RightPanel() {
                 const selected = new Date(date.dateString);
                 const current = new Date(startDate.dateString);
 
+                //Update start date, if selected date is earlier than current date
+                if (selected < current) {
+                    setStartDate(date);
+                    setEndDate(null);
+                    setMarkedDates({
+                        [date.dateString]: markedDateStartStyle,
+                    });
+                    setDatesInBetween([]);
+                    return;
+                }
+
                 //Store dates between the starting date and selected date in array
                 if (selected > current) {
                     let tempDate = new Date(current);
