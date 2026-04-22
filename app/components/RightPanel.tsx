@@ -1,9 +1,21 @@
-import { Box, Text } from "@gluestack-ui/themed";
-import { useState } from "react";
+import { Box, HStack, Text, Input, Button, InputIcon, InputSlot, CalendarDaysIcon, InputField, VStack } from "@gluestack-ui/themed";
+import { useState, useEffect, useRef } from "react";
 import { Calendar, DateData } from 'react-native-calendars';
+import SearchBar from "./SearchBar";
+import { useResponsive } from "../hooks/UseResponsive";
+import { Pressable } from "react-native";
 
 
 export default function RightPanel() {
+
+    //Get window dimensions
+    const { width, height, isMobile } = useResponsive();
+
+    //Flag for calendar display & click event
+    const [showCalendar, setShowCalendar] = useState(false);
+    const calendarRef = useRef<HTMLDivElement | null>(null);
+    const [fromDateClicked, setFromDateClicked] = useState(false);
+    const [toDateClicked, setToDateClicked] = useState(false);
 
     //Declare date variables
     const dateNow = new Date();
@@ -25,6 +37,21 @@ export default function RightPanel() {
     const markedDateStyle = { color: 'black', textColor: 'white' };
     const markedDateEndStyle = { endingDay: true, color: 'black', textColor: 'white' };
 
+    useEffect(() => {
+        //Handle click event, hides calendar when mouse goes outside the calendar component
+        function handleClickOutside(event: MouseEvent) {
+            if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+                setShowCalendar(false);
+                setFromDateClicked(false);
+                setToDateClicked(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+    }, []);
+
     const handleDateClick = (date: DateData) => {
         try {
             //Mark selected date on calendar, if startDate is initially empty
@@ -36,8 +63,8 @@ export default function RightPanel() {
                 return;
             };
 
-            //Reset state variable values to empty list or null
-            if (startDate && endDate) {
+            //Update starting date value to selected date
+            if (fromDateClicked && showCalendar) {
                 setStartDate(date);
                 setEndDate(null);
                 setMarkedDates({
@@ -47,7 +74,21 @@ export default function RightPanel() {
                 return;
             }
 
-            if (startDate) {
+            //Update ending date value to selected date
+            if (toDateClicked && showCalendar) {
+                let tempEndDate = new Date(date.dateString);
+                let tempStartDate = new Date(startDate.dateString);
+                if (tempEndDate > tempStartDate) {
+                    console.log("update end date");
+                    setEndDate(date);
+                    setMarkedDates({
+                        [date.dateString]: markedDateEndStyle,
+                    });
+                    setDatesInBetween([]);
+                }
+            }
+
+            if (startDate && toDateClicked) {
                 //Store selected dates and their CSS styles
                 const tempStyles: Record<string, Object> = {};
 
@@ -103,20 +144,63 @@ export default function RightPanel() {
         } catch (error) {
             console.log(error)
         }
-
     }
 
     return (
-        <Box>
-            <Calendar
-                markingType={'period'}
-                onDayPress={(date: DateData) => {
-                    handleDateClick(date);
-                }}
-                maxDate={maxDate.toISOString()}
-                markedDates={markedDates}
-                disableAllTouchEventsForDisabledDays={true}
-            />
+        <Box
+            w="$2/3"
+            alignSelf="center"
+            gap="$3"
+            p="$6"
+            backgroundColor="white"
+            borderTopWidth="$4"
+            borderTopColor="black"
+            borderBottomWidth="$1"
+            borderBottomColor="#52525250"
+            shadowOpacity={0.1}
+            shadowRadius={6}
+            borderRadius="$sm"
+        >
+            <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
+            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" />
+            <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
+                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
+                    <InputSlot className="pl-3">
+                        <InputIcon as={CalendarDaysIcon} />
+                    </InputSlot>
+                    <InputField placeholder={startDate ? startDate?.dateString.slice(5, 10) + "-" + startDate?.dateString.slice(0, 4) : "From"} />
+                </Input>
+            </Pressable>
+
+            <Pressable onPress={() => { setShowCalendar(true); setToDateClicked(true) }}>
+                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
+                    <InputSlot className="pl-3">
+                        <InputIcon as={CalendarDaysIcon} />
+                    </InputSlot>
+                    <InputField placeholder={endDate ? endDate?.dateString.slice(5, 10) + "-" + endDate?.dateString.slice(0, 4) : "To"} />
+                </Input>
+            </Pressable>
+
+            <Box ref={calendarRef}>
+                <Calendar
+                    markingType={'period'}
+                    onDayPress={(date: DateData) => {
+                        handleDateClick(date);
+                    }}
+                    maxDate={maxDate.toISOString()}
+                    markedDates={markedDates}
+                    disableAllTouchEventsForDisabledDays={true}
+
+                    style={{
+                        display: showCalendar ? 'flex' : 'none',
+                        boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                />
+            </Box>
+            <Button w="$1/5" size="lg" bg="black">
+                <Text color='white'>Search</Text>
+            </Button>
         </Box>
+
     )
 }
