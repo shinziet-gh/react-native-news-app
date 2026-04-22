@@ -41,28 +41,40 @@ export default function Index() {
       </HStack>
 
       {/* MAIN CONTENT */}
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView>
         <HStack px="$5">
           {/* LEFT CONTAINER */}
-          <Box shadowOpacity={0.1} shadowRadius={6} style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
+          <Box
+            width="$1/4"
+            display={isMobile ? 'none' : 'flex'}
+            shadowOpacity={0.1}
+            shadowRadius={6}
+            backgroundColor='white'
+          >
             <LeftPanel />
           </Box>
           {/* MIDDLE VIEW */}
-          <Box style={{ flex: 2 }}>
+          <Box width={isMobile ? "$full" : "$2/4"}>
             <NewsPage category={page} />
           </Box>
-          {/* RIGHT CONTAINER */}
-          <Box shadowOpacity={0.1} shadowRadius={6} style={{ flex: 1, display: isMobile ? 'none' : 'flex', backgroundColor: "white" }}>
-            <RightPanel />
-          </Box>
         </HStack>
-
-        {/* FOOTER */}
-        <View style={{ backgroundColor: 'black', height: height * 0.2, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, marginTop: 20 }}>
-          <Text fontSize="$sm" color="white">© 2026 DailyNews. All rights reserved.</Text>
-        </View>
       </ScrollView>
 
+      {/* RIGHT CONTAINER */}
+      <Box
+        width="$1/4"
+        display={isMobile ? 'none' : 'flex'}
+        position='absolute'
+        top="20%"
+        right={20}
+      >
+        <RightPanel />
+      </Box>
+
+      {/* FOOTER */}
+      <View style={{ backgroundColor: 'black', height: height * 0.05, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, marginTop: 20 }}>
+        <Text fontSize="$sm" color="white">© 2026 DailyNews. All rights reserved.</Text>
+      </View>
     </View>
   )
 }
