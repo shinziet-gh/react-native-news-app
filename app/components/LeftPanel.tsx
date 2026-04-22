@@ -46,8 +46,8 @@ export default function LeftPanel() {
     }
 
     useEffect(() => {
-        //categories.forEach(category => fetchNewsByCategory(category));
-        //fetchLatestNews();
+        categories.forEach(category => fetchNewsByCategory(category));
+        fetchLatestNews();
     }, []);
 
     const handleClick = (urlLink: string) => {
@@ -55,7 +55,7 @@ export default function LeftPanel() {
     }
 
     return (
-        <Box gap="$12" paddingHorizontal="$12" marginTop="$8">
+        <Box gap="$12" paddingHorizontal="$12" marginTop="$6">
 
             {/* Latest News Content */}
             <Pressable onHoverIn={() => setIsHovered(true)} onHoverOut={() => setIsHovered(false)}>
@@ -71,7 +71,7 @@ export default function LeftPanel() {
                         alt="news image"
                         w="$full"
                         h="$full"
-                        aspectRatio={3 / 3}
+                        aspectRatio={3 / 2}
                         resizeMode="contain"
                         backgroundColor='black'
                     />
@@ -104,7 +104,7 @@ export default function LeftPanel() {
             {/* News Content by Category */}
             {categories.map((category, index) => (
                 <Box key={category || index}>
-                    <Text color="$black" letterSpacing="$xl" pb="$1.5" w="$full" borderBottomWidth='$1'>
+                    <Text color="$black" fontWeight={400} fontSize="$lg" pb="$1.5" w="$full" borderBottomWidth='$1'>
                         {category.charAt(0).toUpperCase() + category.slice(1)}
                     </Text>
 
