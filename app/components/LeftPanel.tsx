@@ -22,7 +22,11 @@ export default function LeftPanel() {
 
     const fetchNewsByCategory = async (category: string) => {
         try {
-            const apiUrl = `http://localhost:3000/api/news/category=${category}`;
+            //Set optional pageSize parameter
+            const params = new URLSearchParams({
+                pageSize: "2"
+            });
+            const apiUrl = `http://localhost:3000/api/news/category=${category}?${params}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
             setNewsArticles(prev => ({
@@ -104,7 +108,7 @@ export default function LeftPanel() {
             {/* News Content by Category */}
             {categories.map((category, index) => (
                 <Box key={category || index}>
-                    <Text color="$black" fontWeight={400} fontSize="$lg" pb="$1.5" w="$full" borderBottomWidth='$1'>
+                    <Text fontWeight={400} fontSize="$lg" pb="$1.5" w="$full" borderBottomWidth='$1'>
                         {category.charAt(0).toUpperCase() + category.slice(1)}
                     </Text>
 
