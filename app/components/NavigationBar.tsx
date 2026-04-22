@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useResponsive } from '../hooks/UseResponsive';
 import { HStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 
-export default function NavigationBar(props: { handleClick: (arg0: string) => void; }) {
+export default function NavigationBar(props: Readonly<{ handleClick: (arg0: string) => void; }>) {
     const [activeBtn, setActiveBtn] = useState('top-headlines');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -11,13 +11,14 @@ export default function NavigationBar(props: { handleClick: (arg0: string) => vo
 
     //Navigation tabs for different news categories
     const tabs = [
-        { key: 'top-headlines', label: 'Top News' },
+        { key: 'general', label: 'Top News' },
         { key: 'business', label: 'Business' },
         { key: 'health', label: 'Health' },
         { key: 'science', label: 'Science' },
         { key: 'technology', label: 'Technology' },
     ];
 
+    //Pass category to parent via callback prop
     const handleTabPress = (tabKey: string) => {
         setActiveBtn(tabKey);
         props.handleClick(tabKey);

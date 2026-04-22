@@ -22,68 +22,15 @@ const toDate = today.toISOString().split('T')[0];
 // Initialize News API key from environment variable
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 
-//To query /v2/top-headlines for technology
-app.get('/api/news:category=tech', (req, res) => {
-    newsapi.v2.topHeadlines({
-        country: 'us',
-        category: 'technology',
-        pageSize: 10,
-    }).then((response) => {
-        res.json(response);
-    });
-});
-
-//To query /v2/top-headlines for business
-app.get('/api/news:category=business', (req, res) => {
-    newsapi.v2.topHeadlines({
-        country: 'us',
-        category: 'business',
-        pageSize: 10,
-    }).then((response) => {
-        res.json(response);
-    });
-});
-
-//To query /v2/top-headlines for health
-app.get('/api/news:category=health', (req, res) => {
-    newsapi.v2.topHeadlines({
-        country: 'us',
-        category: 'health',
-        pageSize: 10,
-    }).then((response) => {
-        res.json(response);
-    });
-});
-
-//To query /v2/top-headlines for sports
-app.get('/api/news:category=sports', (req, res) => {
-    newsapi.v2.topHeadlines({
-        country: 'us',
-        category: 'sports',
-        pageSize: 10,
-    }).then((response) => {
-        res.json(response);
-    });
-});
-
-//To query /v2/top-headlines
-app.get('/api/news/top-headlines', (req, res) => {
-    newsapi.v2.topHeadlines({
-        country: 'us',
-        pageSize: 10,
-    }).then(response => {
-        console.log(response);
-        res.json(response);
-    });
-});
-
 //To query /v2/top-headlines by category
 app.get('/api/news/category=:category', (req, res) => {
     const category = req.params.category;
+    const pageSize = req.query.pageSize;
+
     newsapi.v2.topHeadlines({
-        category: category,
+        category: category || "general",
         language: 'en',
-        pageSize: 2,
+        pageSize: pageSize || 10,
     }).then(response => {
         console.log(response);
         res.json(response);
@@ -103,18 +50,21 @@ app.get('/api/news/newest', (req, res) => {
     })
 });
 
-//To query /v2/top-headlines for business
-app.get('/api/news/q=:query', (req, res) => {
-    const query = req.params.query;
-    newsapi.v2.topHeadlines({
-        country: 'us',
+//To query /v2/everything by search query AND/OR dates
+app.get('/api/news/search', (req, res) => {
+    const { query, from, to } = req.query;
+
+    newsapi.v2.everything({
+        language: 'en',
         q: query,
+        fromDate: from || fromDate,
+        toDate: to || toDate,
         pageSize: 10,
+        sortBy: 'relevancy',
     }).then((response) => {
         res.json(response);
     });
 });
-
 
 // Run the server
 app.listen(port, () => {
