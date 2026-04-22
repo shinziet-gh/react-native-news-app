@@ -83,7 +83,7 @@ app.get('/api/news/category=:category', (req, res) => {
     newsapi.v2.topHeadlines({
         category: category,
         language: 'en',
-        pageSize: 3,
+        pageSize: 2,
     }).then(response => {
         console.log(response);
         res.json(response);
@@ -93,13 +93,26 @@ app.get('/api/news/category=:category', (req, res) => {
 //To query /v2/everything by published date
 app.get('/api/news/newest', (req, res) => {
     newsapi.v2.everything({
-        pageSize: 3,
+        language: 'en',
+        pageSize: 2,
         sortBy: 'publishedAt',
         sources: 'wired, cnn, nbc-news',
     }).then(response => {
         console.log(response);
         res.json(response);
     })
+});
+
+//To query /v2/top-headlines for business
+app.get('/api/news/q=:query', (req, res) => {
+    const query = req.params.query;
+    newsapi.v2.topHeadlines({
+        country: 'us',
+        q: query,
+        pageSize: 10,
+    }).then((response) => {
+        res.json(response);
+    });
 });
 
 
