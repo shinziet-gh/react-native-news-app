@@ -14,12 +14,24 @@ export default function Index() {
   //Get window dimensions
   const { width, height, isMobile } = useResponsive();
 
-  //Const state to track the selected news category
-  const [page, setPage] = useState("");
-  const handleClick = (category: string) => {
-    setPage(category === 'top-headlines' ? "" : category);
+  //State variable to store the selected news category
+  const [category, setCategory] = useState("general");
 
-    console.log('Selected category:', page);
+  //State variable to store the search query
+  const [searchQuery, setSearchQuery] = useState("");
+
+  //Set category on tab click
+  const handleTabClick = (category: string) => {
+    setCategory(category);
+
+    console.log('Selected category:', category);
+  }
+
+  //Function to set search query
+  const handleSearchEnter = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+
+    console.log(searchQuery);
   }
 
   return (
@@ -30,17 +42,16 @@ export default function Index() {
           <Text bold fontSize="$xl"> DailyNews</Text>
         </Box>
         <Box style={{ flex: 1 }}>
-          <NavigationBar handleClick={handleClick} />
+          <NavigationBar handleClick={handleTabClick} />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
-          <SearchBar placeholder='Search News...' barWidth='$1/2' />
+          <SearchBar placeholder='Search News...' barWidth='$1/2' handleEnter={handleSearchEnter} />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }} alignItems='flex-end'>
           <SocialMedia />
         </Box>
       </HStack>
 
-      {/* MAIN CONTENT */}
       <ScrollView>
         <HStack px="$5">
           {/* LEFT CONTAINER */}
@@ -53,9 +64,9 @@ export default function Index() {
           >
             <LeftPanel />
           </Box>
-          {/* MIDDLE VIEW */}
+          {/* MIDDLE CONTAINER */}
           <Box width={isMobile ? "$full" : "$2/4"}>
-            <NewsPage category={page} />
+            <NewsPage category={category} searchQuery={searchQuery} />
           </Box>
         </HStack>
       </ScrollView>
@@ -72,7 +83,15 @@ export default function Index() {
       </Box>
 
       {/* FOOTER */}
-      <View style={{ backgroundColor: 'black', height: height * 0.05, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, marginTop: 20 }}>
+      <View
+        style={{
+          backgroundColor: 'black',
+          height: height * 0.05,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginHorizontal: 20,
+          marginTop: 20
+        }}>
         <Text fontSize="$sm" color="white">© 2026 DailyNews. All rights reserved.</Text>
       </View>
     </View>

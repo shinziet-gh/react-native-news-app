@@ -5,11 +5,13 @@ import SearchBar from "./SearchBar";
 import { useResponsive } from "../hooks/UseResponsive";
 import { Pressable } from "react-native";
 
-
 export default function RightPanel() {
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
+
+    //State variables for search query
+    const [searchQuery, setSearchQuery] = useState("");
 
     //Flag for calendar display & click event
     const [showCalendar, setShowCalendar] = useState(false);
@@ -146,6 +148,10 @@ export default function RightPanel() {
         }
     }
 
+    const handleSearchEnter = (query: string) => {
+        setSearchQuery(query);
+    }
+
     return (
         <Box
             w="$2/3"
@@ -162,7 +168,7 @@ export default function RightPanel() {
             borderRadius="$sm"
         >
             <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
-            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" />
+            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" handleEnter={handleSearchEnter} />
             <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
                 <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
                     <InputSlot className="pl-3">
