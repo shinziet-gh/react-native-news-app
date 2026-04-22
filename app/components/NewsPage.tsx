@@ -5,35 +5,47 @@ import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 
-export default function NewsPage({ category }: { category: string }) {
+export default function NewsPage({ category, searchQuery }: Readonly<{ category: string, searchQuery: string }>) {
 
-    //Const state to store news articles
+    //State variable to store news articles
     const [newsArticles, setNewsArticles] = useState([]);
     const [headlineStory, setHeadlineStory] = useState([]);
+
+    //State variable to store current search query
+    const [currentQuery, setCurrentQuery] = useState("");
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
-    //Async function to fetch news articles based on the category
+    useEffect(() => {
+        fetchNews();
+    }, [category, searchQuery]); //Fetch news on category and query change
+
     const fetchNews = async () => {
         try {
-            console.log('Category:', category);
-            const apiUrl = category ? `http://localhost:3000/api/news:category=${category}` : 'http://localhost:3000/api/news/top-headlines';
+            //Fetch news by category
+            let apiUrl = `http://localhost:3000/api/news/category=${category}`;
+
+            //Else, Fetch news by search query when triggered
+            if (currentQuery != searchQuery) {
+                const params = new URLSearchParams({
+                    query: searchQuery
+                });
+
+                apiUrl = `http://localhost:3000/api/news/search?${params}`;
+                setCurrentQuery(searchQuery);
+            }
             const response = await fetch(apiUrl);
             const data = await response.json();
-            setHeadlineStory(data.articles[0]);
-            setNewsArticles(data.articles.slice(1)); // Set the rest of the articles as newsArticles
+            setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
+            setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+
         } catch (error) {
             console.error(error);
         }
     };
 
-    useEffect(() => {
-        fetchNews();
-        console.log('Fetched news articles:', newsArticles);
-        console.log('Fetched headline story:', headlineStory);
-    }, [category]); // Call useEffect whenever the category changes
-
+    //Open URL link on new window on click
     const handleClick = (urlLink: string) => {
         WebBrowser.openBrowserAsync(urlLink);
     }
