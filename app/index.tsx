@@ -33,7 +33,7 @@ export default function Index() {
           <NavigationBar handleClick={handleClick} />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
-          <SearchBar />
+          <SearchBar placeholder='Search News...' barWidth='$1/2' />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }} alignItems='flex-end'>
           <SocialMedia />
