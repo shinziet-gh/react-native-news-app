@@ -33,7 +33,7 @@ export default function NewsComponent({ news, isHeadlineStory }: { news: object;
                     bold
                     fontSize={isHeadlineStory ? "$4xl" : "$2xl"}
                 >
-                    {news.title}
+                    {news.title || ""}
                 </Text>
 
                 <Text fontSize={isHeadlineStory ? "$2xl" : "$xl"} color="$gray600">
@@ -48,7 +48,7 @@ export default function NewsComponent({ news, isHeadlineStory }: { news: object;
                     style={{ opacity: isHeadlineStory ? 0.9 : 1 }}
                     display={isHeadlineStory ? 'none' : 'flex'}
                 >
-                    {news.description}
+                    {news.description || ""}
                 </Text>
 
                 {/* READ MORE BUTTON */}
