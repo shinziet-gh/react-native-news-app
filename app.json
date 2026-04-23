@@ -3,7 +3,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "experiments": {
-      "baseUrl": "/expo-gh-pages/"
+      "baseUrl": "/react-native-news-app/"
     }
   }
 }
