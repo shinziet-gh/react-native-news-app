@@ -1,9 +1,9 @@
 {
   "expo": {
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true
-  },
-  "plugins": [
-    "expo-video"
-  ]
+    "newArchEnabled": true,
+    "experiments": {
+      "baseUrl": "/expo-gh-pages/"
+    }
+  }
 }
