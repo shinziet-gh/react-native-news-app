@@ -15,23 +15,46 @@ export default function Index() {
   const { width, height, isMobile } = useResponsive();
 
   //State variable to store the selected news category
-  const [category, setCategory] = useState("general");
-
-  //State variable to store the search query
-  const [searchQuery, setSearchQuery] = useState("");
+  const [params, setParams] = useState({ category: "general", searchQuery: "", fromDate: "", toDate: "" });
 
   //Set category on tab click
   const handleTabClick = (category: string) => {
-    setCategory(category);
+    setParams(
+      {
+        category: category,
+        searchQuery: params["searchQuery"] || "",
+        fromDate: params["fromDate"] || "",
+        toDate: params["toDate"] || ""
+      });
 
     console.log('Selected category:', category);
   }
 
-  //Function to set search query
-  const handleSearchEnter = (searchQuery: string) => {
-    setSearchQuery(searchQuery);
+  //Update search query when enter key on navigation search bar is pressed
+  const handleNavSearchEnter = (searchQuery: string) => {
+    setParams(
+      {
+        category: params["category"],
+        searchQuery: searchQuery,
+        fromDate: params["fromDate"] || "",
+        toDate: params["toDate"] || ""
+      });
 
-    console.log(searchQuery);
+    console.log('Search query:', searchQuery);
+  }
+
+  //Update from and to date when search button is clicked
+  const handleSearchParams = (searchParams: { searchQuery: string; fromDate: string; toDate: string; }) => {
+    setParams(
+      {
+        category: params["category"],
+        searchQuery: searchParams["searchQuery"] || "",
+        fromDate: params["fromDate"] || "",
+        toDate: params["toDate"] || ""
+      });
+
+    console.log('From:', searchParams["fromDate"]);
+    console.log('To:', searchParams["toDate"]);
   }
 
   return (
@@ -45,7 +68,7 @@ export default function Index() {
           <NavigationBar handleClick={handleTabClick} />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
-          <SearchBar placeholder='Search News...' barWidth='$1/2' handleEnter={handleSearchEnter} />
+          <SearchBar placeholder='Search News...' barWidth='$1/2' handleEnter={handleNavSearchEnter} />
         </Box>
         <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }} alignItems='flex-end'>
           <SocialMedia />
@@ -66,7 +89,7 @@ export default function Index() {
           </Box>
           {/* MIDDLE CONTAINER */}
           <Box width={isMobile ? "$full" : "$2/4"}>
-            <NewsPage category={category} searchQuery={searchQuery} />
+            <NewsPage params={params} />
           </Box>
         </HStack>
       </ScrollView>
@@ -79,7 +102,7 @@ export default function Index() {
         top="20%"
         right={20}
       >
-        <RightPanel />
+        <RightPanel handleParams={handleSearchParams} />
       </Box>
 
       {/* FOOTER */}

@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { useResponsive } from "../hooks/UseResponsive";
 import { Pressable } from "react-native";
 
-export default function RightPanel() {
+export default function RightPanel({ handleParams }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; }>) {
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
@@ -152,6 +152,18 @@ export default function RightPanel() {
         setSearchQuery(query);
     }
 
+    const handleEnterBtn = () => {
+        if (searchQuery) {
+            //Create a set of params data
+            let params = {
+                searchQuery: searchQuery,
+                fromDate: startDate?.dateString ?? "",
+                toDate: endDate?.dateString ?? ""
+            };
+            handleParams(params);
+        }
+    }
+
     return (
         <Box
             w="$2/3"
@@ -203,7 +215,7 @@ export default function RightPanel() {
                     }}
                 />
             </Box>
-            <Button w="$1/5" size="lg" bg="black">
+            <Button w="$1/5" size="lg" bg="black" onPress={() => handleEnterBtn()}>
                 <Text color='white'>Search</Text>
             </Button>
         </Box>

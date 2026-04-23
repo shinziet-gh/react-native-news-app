@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Box, Text, HStack, VStack, Image } from "@gluestack-ui/themed";
 import { useResponsive } from '../hooks/UseResponsive';
 
-export default function NewsComponent({ news, isHeadlineStory }: { news: object; isHeadlineStory: boolean }) {
+export default function NewsComponent({ news, isHeadlineStory }: Readonly<{ news: object; isHeadlineStory: boolean }>) {
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
