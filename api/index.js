@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import serverless from 'serverless-http';
 import NewsAPI from 'newsapi';
 
 //Load environment variables
@@ -21,6 +22,10 @@ const toDate = today.toISOString().split('T')[0];
 
 // Initialize News API key from environment variable
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
+
+app.get('/test', (req, res) => {
+    res.json("Test endpoint working.")
+})
 
 //To query /v2/top-headlines by category
 app.get('/api/news/category=:category', (req, res) => {
@@ -67,6 +72,8 @@ app.get('/api/news/search', (req, res) => {
 });
 
 // Run the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+///app.listen(port, () => {
+///    console.log(`Server is running on http://localhost:${port}`);
+//});
+
+export default serverless(app);
