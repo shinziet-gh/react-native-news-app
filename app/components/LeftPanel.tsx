@@ -136,7 +136,7 @@ export default function LeftPanel() {
                                 />
                                 <Text
                                     bold
-                                    fontSize={"$2xl"}
+                                    fontSize={"$xl"}
                                 >
                                     {news.title}
                                 </Text>

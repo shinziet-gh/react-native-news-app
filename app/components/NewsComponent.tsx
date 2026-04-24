@@ -31,20 +31,19 @@ export default function NewsComponent({ news, isHeadlineStory }: Readonly<{ news
             <VStack flex={1} alignSelf="stretch" px="$3" py="$3" space='xl' justifyContent='flex-start' >
                 <Text
                     bold
-                    fontSize={isHeadlineStory ? "$4xl" : "$2xl"}
+                    fontSize={isHeadlineStory ? "$3xl" : "$xl"}
                 >
                     {news.title || ""}
                 </Text>
 
-                <Text fontSize={isHeadlineStory ? "$2xl" : "$xl"} color="$gray600">
+                <Text fontSize={isHeadlineStory ? "$xl" : "$lg"} color="$gray600">
                     {news.source?.name || "Unknown"} • {" "}
                     {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
                 </Text>
 
                 <Text
-                    fontSize={isHeadlineStory ? "$2xl" : "$lg"}
                     color="$gray700"
-                    numberOfLines={isHeadlineStory ? 4 : 2}
+                    numberOfLines={2}
                     style={{ opacity: isHeadlineStory ? 0.9 : 1 }}
                     display={isHeadlineStory ? 'none' : 'flex'}
                 >
