@@ -2,7 +2,7 @@
 
 A React Native news app with a Node.js backend that fetches and displays the latest news from the News API.
 
-## Technology Stack
+## Tools
 
 - **React Native** — frontend
 - **Node.js** — backend server
