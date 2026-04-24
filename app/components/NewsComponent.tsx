@@ -52,7 +52,7 @@ export default function NewsComponent({ news, isHeadlineStory }: Readonly<{ news
                 </Text>
 
                 {/* READ MORE BUTTON */}
-                <Button size="lg" w={isHeadlineStory ? "$2/5" : "$1/4"} alignSelf="flex-end" marginTop={'auto'} bg="black" >
+                <Button size="lg" w={isHeadlineStory ? "$3/5" : "$1/3"} alignSelf="flex-end" marginTop={'auto'} bg="black" >
                     <Text color='white'>Read More</Text>
                 </Button>
             </VStack>

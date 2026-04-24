@@ -166,7 +166,7 @@ export default function RightPanel({ handleParams }: Readonly<{ handleParams: (p
 
     return (
         <Box
-            w="$2/3"
+            width="$5/6"
             alignSelf="center"
             gap="$3"
             p="$6"
@@ -215,7 +215,7 @@ export default function RightPanel({ handleParams }: Readonly<{ handleParams: (p
                     }}
                 />
             </Box>
-            <Button w="$1/5" size="lg" bg="black" onPress={() => handleEnterBtn()}>
+            <Button w="$3/5" size="lg" bg="black" onPress={() => handleEnterBtn()}>
                 <Text color='white'>Search</Text>
             </Button>
         </Box>
