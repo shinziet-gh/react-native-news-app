@@ -3,9 +3,6 @@ import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import { Button, Box, Text, HStack, VStack, Image, Pressable } from "@gluestack-ui/themed";
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 export default function LeftPanel() {
 
@@ -23,15 +20,13 @@ export default function LeftPanel() {
         'sports',
     ];
 
-    const api_url = process.env.NODE_ENV == "production" ? process.env.API_URL : "http://localhost:3000";
-
     const fetchNewsByCategory = async (category: string) => {
         try {
             //Set optional pageSize parameter
             const params = new URLSearchParams({
                 pageSize: "2"
             });
-            const apiUrl = `${api_url}/api/news/category=${category}?${params}`;
+            const apiUrl = `${process.env.BASE_URL}/api/news/category=${category}?${params}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
             setNewsArticles(prev => ({
@@ -45,7 +40,7 @@ export default function LeftPanel() {
 
     const fetchLatestNews = async () => {
         try {
-            const apiUrl = `${api_url}/api/news/newest`;
+            const apiUrl = `${process.env.BASE_URL}/api/news/newest`;
             const response = await fetch(apiUrl);
             const data = await response.json();
             setLatestNews(data.articles);
