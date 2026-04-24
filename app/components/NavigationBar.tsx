@@ -3,7 +3,7 @@ import { useResponsive } from '../hooks/UseResponsive';
 import { HStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 
 export default function NavigationBar(props: Readonly<{ handleClick: (arg0: string) => void; }>) {
-    const [activeBtn, setActiveBtn] = useState('top-headlines');
+    const [activeBtn, setActiveBtn] = useState('general');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     //Get window dimensions
@@ -28,16 +28,16 @@ export default function NavigationBar(props: Readonly<{ handleClick: (arg0: stri
     };
 
     return (
-        <HStack alignItems="center" width="$full">
+        <HStack alignItems="center" justifyContent='space-around'>
             {tabs.map((tab) => {
                 const isActive = activeBtn === tab.key;
                 return (
                     <Pressable
                         key={tab.key}
-                        flex={1}
                         onPress={() => handleTabPress(tab.key)}
                         bg={isActive ? 'black' : 'transparent'}
                         borderRadius="$sm"
+                        px="$5"
                     >
                         <Box py="$4" alignItems="center">
                             <Text

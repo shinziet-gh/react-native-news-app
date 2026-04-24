@@ -7,7 +7,7 @@ export default function SocialMedia() {
 
     return (
         <Box bg="white">
-            <Box flexDirection='row' py="$1" gap="$2" >
+            <Box flexDirection='row' py="$1" gap="$2" justifyContent='space-between'>
                 {socialIcons.map((icon, index) =>
                     <Button px="$4" size="xl" key={index} bg="black" >
                         <ButtonIcon as={icon} size="md"></ButtonIcon>

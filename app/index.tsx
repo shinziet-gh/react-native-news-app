@@ -60,17 +60,18 @@ export default function Index() {
   return (
     <View style={{ flex: 1 }}>
       {/* NAVIGATION BAR */}
-      <HStack justifyContent='space-evenly' backgroundColor='white' px="$12" py="$2" m="$5" alignItems='center'>
-        <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
+      <HStack justifyContent='space-between' alignItems='center' backgroundColor='white' px="$12" py="$2" m="$5">
+        <Box style={{ display: isMobile ? 'none' : 'flex' }} >
           <Text bold fontSize="$xl"> DailyNews</Text>
         </Box>
-        <Box style={{ flex: 1 }}>
+
+        <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
           <NavigationBar handleClick={handleTabClick} />
-        </Box>
-        <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }}>
-          <SearchBar placeholder='Search News...' barWidth='$1/2' handleEnter={handleNavSearchEnter} />
-        </Box>
-        <Box style={{ flex: 1, display: isMobile ? 'none' : 'flex' }} alignItems='flex-end'>
+          <Box style={{ display: isMobile ? 'none' : 'flex' }}>
+            <SearchBar placeholder='Search News...' barWidth='$full' handleEnter={handleNavSearchEnter} />
+          </Box>
+        </HStack>
+        <Box style={{ display: isMobile ? 'none' : 'flex' }}>
           <SocialMedia />
         </Box>
       </HStack>
@@ -79,7 +80,7 @@ export default function Index() {
         <HStack px="$5">
           {/* LEFT CONTAINER */}
           <Box
-            width="$1/4"
+            width={width * 0.3}
             display={isMobile ? 'none' : 'flex'}
             shadowOpacity={0.1}
             shadowRadius={6}
@@ -88,7 +89,7 @@ export default function Index() {
             <LeftPanel />
           </Box>
           {/* MIDDLE CONTAINER */}
-          <Box width={isMobile ? "$full" : "$2/4"}>
+          <Box width={isMobile ? width : width * 0.5}>
             <NewsPage params={params} />
           </Box>
         </HStack>
@@ -96,11 +97,12 @@ export default function Index() {
 
       {/* RIGHT CONTAINER */}
       <Box
-        width="$1/4"
+        width={width * 0.2}
         display={isMobile ? 'none' : 'flex'}
         position='absolute'
         top="20%"
-        right={20}
+        right="$1"
+
       >
         <RightPanel handleParams={handleSearchParams} />
       </Box>
@@ -117,6 +119,6 @@ export default function Index() {
         }}>
         <Text fontSize="$sm" color="white">© 2026 DailyNews. All rights reserved.</Text>
       </View>
-    </View>
+    </View >
   )
 }
