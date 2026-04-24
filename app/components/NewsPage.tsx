@@ -3,6 +3,9 @@ import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
 
@@ -13,6 +16,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
+    const api_url = process.env.NODE_ENV == "production" ? process.env.API_URL : "http://localhost:3000";
+
     useEffect(() => {
         let { category, searchQuery, fromDate, toDate } = params;
         fetchNews(category, searchQuery, fromDate, toDate);
@@ -21,7 +26,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
         try {
             //Fetch news by category
-            let apiUrl = `http://localhost:3000/api/news/category=${category}`;
+            let apiUrl = `${api_url}/api/news/category=${category}`;
 
             //Else, Fetch news by search query when triggered
             if (searchQuery) {
@@ -31,7 +36,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     to: toDate ?? ""
                 });
 
-                apiUrl = `http://localhost:3000/api/news/search?${params}`;
+                apiUrl = `${api_url}/api/news/search?${params}`;
             }
             const response = await fetch(apiUrl);
             const data = await response.json();
