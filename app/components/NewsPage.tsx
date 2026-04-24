@@ -3,8 +3,12 @@ import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
+import { getEnv } from "../env";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
+
+    console.log(getEnv("BASE_URL"));
+    const base_url = getEnv("BASE_URL");
 
     //State variable to store news articles
     const [newsArticles, setNewsArticles] = useState([]);
@@ -21,7 +25,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
         try {
             //Fetch news by category
-            let apiUrl = `${process.env.BASE_URL}/api/news/category=${category}`;
+            let apiUrl = `${base_url}/api/news/category=${category}`;
 
             //Else, Fetch news by search query when triggered
             if (searchQuery) {
@@ -31,7 +35,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     to: toDate ?? ""
                 });
 
-                apiUrl = `${process.env.BASE_URL}/api/news/search?${params}`;
+                apiUrl = `${base_url}/api/news/search?${params}`;
             }
             const response = await fetch(apiUrl);
             const data = await response.json();

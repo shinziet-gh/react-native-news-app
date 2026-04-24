@@ -3,8 +3,11 @@ import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import { Button, Box, Text, HStack, VStack, Image, Pressable } from "@gluestack-ui/themed";
+import { getEnv } from '../env';
 
 export default function LeftPanel() {
+    console.log(getEnv("BASE_URL"));
+    const base_url = getEnv("BASE_URL");
 
     const [newsArticles, setNewsArticles] = useState<{ [key: string]: any }>({});
     const [latestNews, setLatestNews] = useState([]);
@@ -75,7 +78,7 @@ export default function LeftPanel() {
                         alt="news image"
                         w="$full"
                         h="$full"
-                        aspectRatio={3 / 2}
+                        aspectRatio={5 / 4}
                         resizeMode="contain"
                         backgroundColor='black'
                     />
