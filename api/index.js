@@ -23,12 +23,16 @@ const toDate = today.toISOString().split('T')[0];
 // Initialize News API key from environment variable
 const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
 
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
     res.json("Test endpoint working.")
 })
 
+app.get('/test', (req, res) => {
+    res.json("Hello world")
+})
+
 //To query /v2/top-headlines by category
-app.get('/api/news/category=:category', (req, res) => {
+app.get('/api/news/category=:category', async (req, res) => {
     const category = req.params.category;
     const pageSize = req.query.pageSize;
 
@@ -43,7 +47,7 @@ app.get('/api/news/category=:category', (req, res) => {
 });
 
 //To query /v2/everything by published date
-app.get('/api/news/newest', (req, res) => {
+app.get('/api/news/newest', async (req, res) => {
     newsapi.v2.everything({
         language: 'en',
         pageSize: 2,
@@ -56,7 +60,7 @@ app.get('/api/news/newest', (req, res) => {
 });
 
 //To query /v2/everything by search query AND/OR dates
-app.get('/api/news/search', (req, res) => {
+app.get('/api/news/search', async (req, res) => {
     const { query, from, to } = req.query;
 
     newsapi.v2.everything({
@@ -72,8 +76,11 @@ app.get('/api/news/search', (req, res) => {
 });
 
 // Run the server
-///app.listen(port, () => {
-///    console.log(`Server is running on http://localhost:${port}`);
-//});
+if (process.env.NODE_ENV != "production") {
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
 
-export default serverless(app);
+// Export the Express app
+export default app;
