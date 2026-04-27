@@ -28,7 +28,7 @@ export default function LeftPanel() {
         try {
             //Set optional pageSize parameter
             const params = new URLSearchParams({
-                pageSize: "2"
+                pageSize: "3"
             });
             const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
             const response = await fetch(apiUrl);
@@ -48,6 +48,8 @@ export default function LeftPanel() {
             const response = await fetch(apiUrl);
             const data = await response.json();
             setLatestNews(data.articles);
+
+            setIsLoading(false); //Hide loading spinner
         } catch (error) {
             console.error(error);
         }
@@ -57,9 +59,11 @@ export default function LeftPanel() {
         setIsLoading(true); //Show loading spinner
 
         categories.forEach(category => fetchNewsByCategory(category));
-        fetchLatestNews();
 
-        setIsLoading(false); //Hide loading spinner
+        setTimeout(
+            () => { fetchLatestNews(); },
+            3000
+        )
     }, []);
 
     const handleClick = (urlLink: string) => {

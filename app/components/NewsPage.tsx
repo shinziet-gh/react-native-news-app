@@ -24,7 +24,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
         fetchNews(category, searchQuery, fromDate, toDate);
 
-        setIsLoading(false); //Hide loading spinner
     }, [params]);
 
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
@@ -46,6 +45,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             const data = await response.json();
             setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
             setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+
+            setIsLoading(false); //Hide loading spinner
         } catch (error) {
             console.error(error);
         }
