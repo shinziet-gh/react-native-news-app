@@ -28,7 +28,7 @@ export default function LeftPanel() {
         try {
             //Set optional pageSize parameter
             const params = new URLSearchParams({
-                pageSize: "3"
+                pageSize: "2"
             });
             const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
             const response = await fetch(apiUrl);
