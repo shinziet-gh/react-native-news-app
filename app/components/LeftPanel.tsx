@@ -2,15 +2,16 @@ import React from 'react'
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
-import { Button, Box, Text, HStack, VStack, Image, Pressable } from "@gluestack-ui/themed";
+import { Button, Box, Text, HStack, VStack, Image, Pressable, Spinner } from "@gluestack-ui/themed";
 import { getEnv } from '../env';
 
 export default function LeftPanel() {
-    console.log(getEnv("BASE_URL"));
     const base_url = getEnv("BASE_URL");
 
     const [newsArticles, setNewsArticles] = useState<{ [key: string]: any }>({});
     const [latestNews, setLatestNews] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
@@ -29,7 +30,7 @@ export default function LeftPanel() {
             const params = new URLSearchParams({
                 pageSize: "2"
             });
-            const apiUrl = `${process.env.BASE_URL}/api/news/category=${category}?${params}`;
+            const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
             setNewsArticles(prev => ({
@@ -43,7 +44,7 @@ export default function LeftPanel() {
 
     const fetchLatestNews = async () => {
         try {
-            const apiUrl = `${process.env.BASE_URL}/api/news/newest`;
+            const apiUrl = `${base_url}/api/news/newest`;
             const response = await fetch(apiUrl);
             const data = await response.json();
             setLatestNews(data.articles);
@@ -53,8 +54,12 @@ export default function LeftPanel() {
     }
 
     useEffect(() => {
+        setIsLoading(true); //Show loading spinner
+
         categories.forEach(category => fetchNewsByCategory(category));
         fetchLatestNews();
+
+        setIsLoading(false); //Hide loading spinner
     }, []);
 
     const handleClick = (urlLink: string) => {
@@ -73,37 +78,42 @@ export default function LeftPanel() {
 
             {latestNews.map((news, index) => (
                 <Pressable key={news.url || index} onPress={() => handleClick(news.url)}>
-                    <Image
-                        source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                        alt="news image"
-                        w="$full"
-                        h="$full"
-                        aspectRatio={5 / 4}
-                        resizeMode="contain"
-                        backgroundColor='black'
-                    />
+                    {isLoading ? (
+                        <Spinner size="large" alignSelf='center' marginVertical="$9" />
+                    ) : (
+                        <>
+                            <Image
+                                source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                alt="news image"
+                                w="$full"
+                                h="$full"
+                                aspectRatio={5 / 4}
+                                resizeMode="contain"
+                                backgroundColor='black'
+                            />
 
-                    <HStack
-                        gap="$3"
-                        pl="$1"
-                        pb="$3"
-                        position="absolute"
-                        bottom="$3"
-                        left="$3"
-                        right="$3"
-                    >
+                            <HStack
+                                gap="$3"
+                                pl="$1"
+                                pb="$3"
+                                position="absolute"
+                                bottom="$3"
+                                left="$3"
+                                right="$3"
+                            >
+                                <VStack w="$full" gap="$3" >
+                                    <Text bold color='white' fontSize="$2xl" marginRight="$12">
+                                        {news.title}
+                                    </Text>
+                                    <Text color='white'>
+                                        {news.source?.name || "Unknown"} • {" "}
+                                        {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                    </Text>
+                                </VStack>
 
-                        <VStack w="$full" gap="$3" >
-                            <Text bold color='white' fontSize="$2xl" marginRight="$12">
-                                {news.title}
-                            </Text>
-                            <Text color='white'>
-                                {news.source?.name || "Unknown"} • {" "}
-                                {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
-                            </Text>
-                        </VStack>
-
-                    </HStack>
+                            </HStack>
+                        </>
+                    )}
                 </Pressable>
             )
             )}
@@ -125,25 +135,31 @@ export default function LeftPanel() {
                             marginTop="$5"
                         >
                             <Pressable gap="$2.5" onPress={() => handleClick(news.url)}>
-                                <Image
-                                    source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                                    alt="news image"
-                                    w="$full"
-                                    h="$full"
-                                    aspectRatio={16 / 9}
-                                    resizeMode="contain"
-                                    backgroundColor='#525252'
-                                />
-                                <Text
-                                    bold
-                                    fontSize={"$xl"}
-                                >
-                                    {news.title}
-                                </Text>
-                                <Text color="$gray600">
-                                    {news.source?.name || "Unknown"} • {" "}
-                                    {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
-                                </Text>
+                                {isLoading ? (
+                                    <Spinner size="large" alignSelf='center' marginVertical="$9" />
+                                ) : (
+                                    <>
+                                        <Image
+                                            source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                            alt="news image"
+                                            w="$full"
+                                            h="$full"
+                                            aspectRatio={16 / 9}
+                                            resizeMode="contain"
+                                            backgroundColor='#525252'
+                                        />
+                                        <Text
+                                            bold
+                                            fontSize={"$xl"}
+                                        >
+                                            {news.title}
+                                        </Text>
+                                        <Text color="$gray600">
+                                            {news.source?.name || "Unknown"} • {" "}
+                                            {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                        </Text>
+                                    </>
+                                )}
                             </Pressable>
                         </VStack >
                     ))}

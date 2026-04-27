@@ -6,20 +6,25 @@ import NewsComponent from './NewsComponent';
 import { getEnv } from "../env";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
-
-    console.log(getEnv("BASE_URL"));
     const base_url = getEnv("BASE_URL");
 
     //State variable to store news articles
     const [newsArticles, setNewsArticles] = useState([]);
     const [headlineStory, setHeadlineStory] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(true);
+
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
     useEffect(() => {
         let { category, searchQuery, fromDate, toDate } = params;
+
+        setIsLoading(true); //Show loading spinner
+
         fetchNews(category, searchQuery, fromDate, toDate);
+
+        setIsLoading(false); //Hide loading spinner
     }, [params]);
 
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
@@ -41,7 +46,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             const data = await response.json();
             setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
             setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
-
         } catch (error) {
             console.error(error);
         }
@@ -54,7 +58,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     return (
         <Box px="$4">
-            <NewsComponent news={headlineStory} isHeadlineStory={true} />
+            <NewsComponent news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
+
             {newsArticles.map((news, index) => (
                 <Pressable
                     key={news.url || index}
@@ -62,7 +67,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     my="$4"
                     marginBottom={0}
                 >
-                    <NewsComponent news={news} isHeadlineStory={false} />
+                    <NewsComponent news={news} isHeadlineStory={false} isLoading={isLoading} />
                 </Pressable>
             ))}
         </Box>
