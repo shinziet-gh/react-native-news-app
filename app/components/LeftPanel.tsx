@@ -81,7 +81,7 @@ export default function LeftPanel() {
             </Pressable>
 
             {latestNews.map((news, index) => (
-                <Pressable key={news.url || index} onPress={() => handleClick(news.url)}>
+                <Pressable key={news.url || index} onPress={() => handleClick(news.url)} >
                     {isLoading ? (
                         <Spinner size="large" alignSelf='center' marginVertical="$9" />
                     ) : (
@@ -91,25 +91,24 @@ export default function LeftPanel() {
                                 alt="news image"
                                 w="$full"
                                 h="$full"
-                                aspectRatio={5 / 4}
+                                aspectRatio={5 / 3}
                                 resizeMode="contain"
                                 backgroundColor='black'
                             />
 
                             <HStack
                                 gap="$3"
-                                pl="$1"
-                                pb="$3"
                                 position="absolute"
-                                bottom="$3"
-                                left="$3"
-                                right="$3"
+                                bottom="$0"
+                                left="$0"
+                                right="$0"
+
                             >
-                                <VStack w="$full" gap="$3" >
-                                    <Text bold color='white' fontSize="$2xl" marginRight="$12">
+                                <VStack w="$full" p="$3" gap="$3" backgroundColor="rgba(255,255,255,0.8)">
+                                    <Text bold fontSize="$xl" marginRight="$12">
                                         {news.title}
                                     </Text>
-                                    <Text color='white'>
+                                    <Text>
                                         {news.source?.name || "Unknown"} • {" "}
                                         {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
                                     </Text>
