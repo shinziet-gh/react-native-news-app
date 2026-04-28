@@ -148,10 +148,6 @@ export default function RightPanel({ handleParams }: Readonly<{ handleParams: (p
         }
     }
 
-    const handleSearchEnter = (query: string) => {
-        setSearchQuery(query);
-    }
-
     const handleEnterBtn = () => {
         if (searchQuery) {
             //Create a set of params data
@@ -180,7 +176,7 @@ export default function RightPanel({ handleParams }: Readonly<{ handleParams: (p
             borderRadius="$sm"
         >
             <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
-            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" handleEnter={handleSearchEnter} />
+            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" setKeyword={setSearchQuery} />
             <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
                 <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
                     <InputSlot className="pl-3">

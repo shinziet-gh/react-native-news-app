@@ -1,13 +1,13 @@
 import { Heading, Input, InputField, InputIcon, InputSlot, SearchIcon, VStack } from "@gluestack-ui/themed";
 import React, { useState } from "react";
 
-export default function SearchBar({ placeholder, barWidth, handleEnter }: Readonly<{ placeholder: string, barWidth: string, handleEnter: (arg0: string) => void; }>) {
+export default function SearchBar({ placeholder, barWidth, handleEnter, setKeyword }: Readonly<{ placeholder: string, barWidth: string, handleEnter?: (arg0: string) => void; setKeyword?: (arg0: string) => void }>) {
 
     const [searchQuery, setSearchQuery] = useState("");
 
     //Pass search query to parent via callback prop
     const handleEnterSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && handleEnter) {
             handleEnter(searchQuery);
         }
     }
@@ -22,7 +22,7 @@ export default function SearchBar({ placeholder, barWidth, handleEnter }: Readon
                     value={searchQuery}
                     placeholder={placeholder || ""}
                     onKeyPress={(event) => handleEnterSearch(event)}
-                    onChangeText={(text) => setSearchQuery(text)}
+                    onChangeText={(text) => { setSearchQuery(text); setKeyword?.(text); }}
                 />
             </Input>
         </VStack>
