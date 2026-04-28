@@ -49,8 +49,8 @@ export default function Index() {
       {
         category: params["category"],
         searchQuery: searchParams["searchQuery"] || "",
-        fromDate: params["fromDate"] || "",
-        toDate: params["toDate"] || ""
+        fromDate: searchParams["fromDate"] || "",
+        toDate: searchParams["toDate"] || ""
       });
 
     console.log('From:', searchParams["fromDate"]);
