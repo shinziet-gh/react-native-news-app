@@ -5,8 +5,14 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 ## Tools
 
 - **React Native** — frontend
-- **Node.js** — backend server
+- **Express** — backend server
 - **News API** — news content via REST API
+- **npm** — package manager for installing libraries
+
+## Key Learnings
+
+- Use component state and events
+
 
 ## Setup
 
