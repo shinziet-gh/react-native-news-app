@@ -12,7 +12,7 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 ## Key Learnings
 
 - Use component state and events
-
+- Use React Hook to re-render a component and update its output
 
 ## Setup
 
