@@ -47,6 +47,17 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
 
             setIsLoading(false); //Hide loading spinner
+
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data: unknown) => {
+                    if (hasArticles(data)) {
+                        console.log("articles", data.articles);
+                    }
+                });
+            function hasArticles(data: any): data is { articles: object } {
+                return "articles" in data;
+            }
         } catch (error) {
             console.error(error);
         }
