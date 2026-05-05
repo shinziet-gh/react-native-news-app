@@ -48,6 +48,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
             setIsLoading(false); //Hide loading spinner
 
+            //Use unknown type for fetched data, then cast to object type if the articles property is contained inside data.
             fetch(apiUrl)
                 .then((response) => response.json())
                 .then((data: unknown) => {
