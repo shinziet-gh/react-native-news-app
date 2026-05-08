@@ -9,8 +9,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const base_url = getEnv("BASE_URL");
 
     //State variable to store news articles
-    const [newsArticles, setNewsArticles] = useState([]);
-    const [headlineStory, setHeadlineStory] = useState([]);
+    const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
+    const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -41,24 +41,12 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
                 apiUrl = `${base_url}/api/news/search?${params}`;
             }
+
             const response = await fetch(apiUrl);
             const data = await response.json();
             setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
             setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
-
             setIsLoading(false); //Hide loading spinner
-
-            //Use unknown type for fetched data, then cast to object type if the articles property is contained inside data.
-            fetch(apiUrl)
-                .then((response) => response.json())
-                .then((data: unknown) => {
-                    if (hasArticles(data)) {
-                        console.log("articles", data.articles);
-                    }
-                });
-            function hasArticles(data: any): data is { articles: object } {
-                return "articles" in data;
-            }
         } catch (error) {
             console.error(error);
         }
