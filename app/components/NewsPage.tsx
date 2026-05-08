@@ -5,6 +5,11 @@ import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 import { getEnv } from "../env";
 
+//Add a new interface
+interface Articles {
+    articles: Record<string, unknown>[];
+}
+
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
 
@@ -42,11 +47,23 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                 apiUrl = `${base_url}/api/news/search?${params}`;
             }
 
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
-            setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+            //Use unknown type for fetched data, then cast to object type if the articles property is contained inside data.
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data: unknown) => {
+                    if (hasArticles(data)) {
+                        console.log("articles", data.articles);
+                        setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
+                        setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+
+                    }
+                });
+            function hasArticles(data: any): data is { articles: Articles[] } {
+                return "articles" in data;
+            }
+
             setIsLoading(false); //Hide loading spinner
+
         } catch (error) {
             console.error(error);
         }
