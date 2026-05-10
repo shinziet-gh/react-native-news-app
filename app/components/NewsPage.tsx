@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 import { getEnv } from "../env";
+import { Articles } from "../articles";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
@@ -42,10 +43,21 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                 apiUrl = `${base_url}/api/news/search?${params}`;
             }
 
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
-            setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+            //Use unknown type for fetched data, then cast to object type if the articles property is contained inside data.
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data: unknown) => {
+                    if (hasArticles(data)) {
+                        console.log("articles", data.articles);
+                        setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
+                        setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+
+                    }
+                });
+            function hasArticles(data: any): data is { articles: Articles[] } {
+                return "articles" in data;
+            }
+
             setIsLoading(false); //Hide loading spinner
         } catch (error) {
             console.error(error);
@@ -61,10 +73,14 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
         <Box px="$4">
             <NewsComponent news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
-            {newsArticles.map((news, index) => (
+            {newsArticles?.map((news, index) => (
                 <Pressable
-                    key={news.url || index}
-                    onPress={() => handleClick(news.url)}
+                    key={news?.url || index}
+                    onPress={() => {
+                        if (news?.url) {
+                            handleClick(news.url);
+                        }
+                    }}
                     my="$4"
                     marginBottom={0}
                 >

@@ -1,8 +1,9 @@
 import React from 'react'
 import { Button, Box, Text, HStack, VStack, Image, Spinner } from "@gluestack-ui/themed";
 import { useResponsive } from '../hooks/UseResponsive';
+import { Articles } from "../articles";
 
-export default function NewsComponent({ news, isHeadlineStory, isLoading }: Readonly<{ news: object; isHeadlineStory: boolean, isLoading: boolean }>) {
+export default function NewsComponent({ news, isHeadlineStory, isLoading }: Readonly<{ news: Articles; isHeadlineStory: boolean, isLoading: boolean }>) {
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
@@ -23,7 +24,7 @@ export default function NewsComponent({ news, isHeadlineStory, isLoading }: Read
                     {/* LEFT IMAGE */}
                     <Box flex={isHeadlineStory ? 2 : 1} style={{ display: isLoading ? 'none' : 'flex' }}>
                         <Image
-                            source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                            source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
                             alt="news image"
                             w="$full"
                             h="$full"
@@ -38,12 +39,12 @@ export default function NewsComponent({ news, isHeadlineStory, isLoading }: Read
                             bold
                             fontSize={isHeadlineStory ? "$3xl" : "$xl"}
                         >
-                            {news.title || ""}
+                            {news?.title || ""}
                         </Text>
 
                         <Text fontSize={isHeadlineStory ? "$xl" : "$lg"} color="$gray600">
-                            {news.source?.name || "Unknown"} • {" "}
-                            {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                            {news?.source?.name || "Unknown"} • {" "}
+                            {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
                         </Text>
 
                         <Text
@@ -52,7 +53,7 @@ export default function NewsComponent({ news, isHeadlineStory, isLoading }: Read
                             style={{ opacity: isHeadlineStory ? 0.9 : 1 }}
                             display={isHeadlineStory ? 'none' : 'flex'}
                         >
-                            {news.description || ""}
+                            {news?.description || ""}
                         </Text>
 
                         {/* READ MORE BUTTON */}
