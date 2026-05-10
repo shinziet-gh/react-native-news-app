@@ -4,11 +4,7 @@ import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 import { getEnv } from "../env";
-
-//Add a new interface
-interface Articles {
-    articles: Record<string, unknown>[];
-}
+import { Articles } from "../articles";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
@@ -63,7 +59,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             }
 
             setIsLoading(false); //Hide loading spinner
-
         } catch (error) {
             console.error(error);
         }
@@ -78,10 +73,14 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
         <Box px="$4">
             <NewsComponent news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
-            {newsArticles.map((news, index) => (
+            {newsArticles?.map((news, index) => (
                 <Pressable
-                    key={news.url || index}
-                    onPress={() => handleClick(news.url)}
+                    key={news?.url || index}
+                    onPress={() => {
+                        if (news?.url) {
+                            handleClick(news.url);
+                        }
+                    }}
                     my="$4"
                     marginBottom={0}
                 >
