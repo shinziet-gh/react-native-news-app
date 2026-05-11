@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import { Button, Box, Text, HStack, VStack, Image, Pressable, Spinner } from "@gluestack-ui/themed";
 import { getEnv } from '../env';
+import { Articles } from '../articles';
 
 export default function LeftPanel() {
     const base_url = getEnv("BASE_URL");
 
-    const [newsArticles, setNewsArticles] = useState<{ [key: string]: any }>({});
-    const [latestNews, setLatestNews] = useState([]);
+    const [newsArticles, setNewsArticles] = useState<{ [key: string]: Articles[] }>({});
+    const [latestNews, setLatestNews] = useState<Articles[]>([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -31,12 +32,20 @@ export default function LeftPanel() {
                 pageSize: "2"
             });
             const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            setNewsArticles(prev => ({
-                ...prev,
-                [category]: data.articles
-            }));
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data: unknown) => {
+                    if (hasArticles(data)) {
+                        console.log("articles", data.articles);
+                        setNewsArticles(prev => ({
+                            ...prev,
+                            [category]: data.articles
+                        }));
+                    }
+                });
+            function hasArticles(data: any): data is { articles: Articles[] } {
+                return "articles" in data;
+            }
         } catch (error) {
             console.error(error);
         }
@@ -45,9 +54,17 @@ export default function LeftPanel() {
     const fetchLatestNews = async () => {
         try {
             const apiUrl = `${base_url}/api/news/newest`;
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            setLatestNews(data.articles);
+            fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data: unknown) => {
+                    if (hasArticles(data)) {
+                        console.log("articles", data.articles);
+                        setLatestNews(data.articles);
+                    }
+                });
+            function hasArticles(data: any): data is { articles: Articles[] } {
+                return "articles" in data;
+            }
 
             setIsLoading(false); //Hide loading spinner
         } catch (error) {
@@ -81,7 +98,12 @@ export default function LeftPanel() {
             </Pressable>
 
             {latestNews.map((news, index) => (
-                <Pressable key={news.url || index} onPress={() => handleClick(news.url)} >
+                <Pressable key={news.url || index} onPress={() => {
+                    if (news?.url) {
+                        handleClick(news.url)
+                    }
+                }}
+                >
                     {isLoading ? (
                         <Spinner size="large" alignSelf='center' marginVertical="$9" />
                     ) : (
@@ -137,13 +159,17 @@ export default function LeftPanel() {
                             p="$3"
                             marginTop="$5"
                         >
-                            <Pressable gap="$2.5" onPress={() => handleClick(news.url)}>
+                            <Pressable gap="$2.5" onPress={() => {
+                                if (news?.url) {
+                                    handleClick(news.url)
+                                }
+                            }}>
                                 {isLoading ? (
                                     <Spinner size="large" alignSelf='center' marginVertical="$9" />
                                 ) : (
                                     <>
                                         <Image
-                                            source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                            source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
                                             alt="news image"
                                             w="$full"
                                             h="$full"
@@ -155,11 +181,11 @@ export default function LeftPanel() {
                                             bold
                                             fontSize={"$xl"}
                                         >
-                                            {news.title}
+                                            {news?.title}
                                         </Text>
                                         <Text color="$gray600">
-                                            {news.source?.name || "Unknown"} • {" "}
-                                            {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                            {news?.source?.name || "Unknown"} • {" "}
+                                            {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString() : ''}
                                         </Text>
                                     </>
                                 )}

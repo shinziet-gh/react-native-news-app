@@ -10,4 +10,5 @@ export interface Articles {
         name?: string;
     }
     publishedAt?: string;
+    category?: string;
 }
