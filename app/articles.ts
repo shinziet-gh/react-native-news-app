@@ -10,5 +10,5 @@ export interface Articles {
         name?: string;
     }
     publishedAt?: string;
-    category?: string;
+    category?: "general" | "entertainment" | "sports" | "health";
 }
