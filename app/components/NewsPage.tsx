@@ -5,6 +5,7 @@ import { useResponsive } from '../hooks/UseResponsive';
 import NewsComponent from './NewsComponent';
 import { getEnv } from "../env";
 import { Articles } from "../articles";
+import { getArticles } from "../getArticles";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
@@ -43,20 +44,10 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                 apiUrl = `${base_url}/api/news/search?${params}`;
             }
 
-            //Use unknown type for fetched data, then cast to object type if the articles property is contained inside data.
-            fetch(apiUrl)
-                .then((response) => response.json())
-                .then((data: unknown) => {
-                    if (hasArticles(data)) {
-                        console.log("articles", data.articles);
-                        setHeadlineStory(data.articles[0]); //Set first article fetched as headline story
-                        setNewsArticles(data.articles.slice(1)); // Set the rest of articles as newsArticles
+            const articles = await getArticles(apiUrl);
+            setHeadlineStory(articles[0]);
+            setNewsArticles(articles?.slice(1));
 
-                    }
-                });
-            function hasArticles(data: any): data is { articles: Articles[] } {
-                return "articles" in data;
-            }
 
             setIsLoading(false); //Hide loading spinner
         } catch (error) {

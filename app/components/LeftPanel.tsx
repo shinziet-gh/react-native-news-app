@@ -5,6 +5,7 @@ import { useResponsive } from '../hooks/UseResponsive';
 import { Button, Box, Text, HStack, VStack, Image, Pressable, Spinner } from "@gluestack-ui/themed";
 import { getEnv } from '../env';
 import { Articles } from '../articles';
+import { getArticles } from '../getArticles';
 
 export default function LeftPanel() {
     const base_url = getEnv("BASE_URL");
@@ -32,20 +33,14 @@ export default function LeftPanel() {
                 pageSize: "2"
             });
             const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
-            fetch(apiUrl)
-                .then((response) => response.json())
-                .then((data: unknown) => {
-                    if (hasArticles(data)) {
-                        console.log("articles", data.articles);
-                        setNewsArticles(prev => ({
-                            ...prev,
-                            [category]: data.articles
-                        }));
-                    }
-                });
-            function hasArticles(data: any): data is { articles: Articles[] } {
-                return "articles" in data;
-            }
+
+            const articles = await getArticles(apiUrl);
+            setNewsArticles(prev => ({
+                ...prev,
+                [category]: articles
+            }));
+
+
         } catch (error) {
             console.error(error);
         }
@@ -54,17 +49,9 @@ export default function LeftPanel() {
     const fetchLatestNews = async () => {
         try {
             const apiUrl = `${base_url}/api/news/newest`;
-            fetch(apiUrl)
-                .then((response) => response.json())
-                .then((data: unknown) => {
-                    if (hasArticles(data)) {
-                        console.log("articles", data.articles);
-                        setLatestNews(data.articles);
-                    }
-                });
-            function hasArticles(data: any): data is { articles: Articles[] } {
-                return "articles" in data;
-            }
+
+            const articles = await getArticles(apiUrl);
+            setLatestNews(articles);
 
             setIsLoading(false); //Hide loading spinner
         } catch (error) {
@@ -77,10 +64,7 @@ export default function LeftPanel() {
 
         categories.forEach(category => fetchNewsByCategory(category));
 
-        setTimeout(
-            () => { fetchLatestNews(); },
-            3000
-        )
+        fetchLatestNews();
     }, []);
 
     const handleClick = (urlLink: string) => {
