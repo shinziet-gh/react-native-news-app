@@ -8,6 +8,7 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 - **Express** — backend server
 - **News API** — news content via REST API
 - **npm** — package manager for installing libraries
+- **typescript** - type annotation syntax
 
 ## Key Learnings
 
