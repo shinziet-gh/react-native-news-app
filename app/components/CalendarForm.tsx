@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { useResponsive } from "../hooks/UseResponsive";
 import { Pressable } from "react-native";
 
-export default function RightPanel({ handleParams }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; }>) {
+export default function CalendarForm({ handleParams }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; }>) {
 
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();

@@ -2,12 +2,12 @@ import React, { useState, Suspense } from 'react'
 import { View, ScrollView } from "react-native";
 import NavigationBar from './components/NavigationBar';
 import SocialMedia from './components/SocialMedia';
-import NewsList from './components/NewsList';
 import { useResponsive } from './hooks/UseResponsive';
 import SearchBar from './components/SearchBar';
 import { Box, HStack, Text } from '@gluestack-ui/themed';
-import LeftPanel from './components/LeftPanel';
-import RightPanel from './components/RightPanel';
+import NewsList from './components/NewsList';
+import SideNews from './components/SideNews';
+import CalendarForm from './components/CalendarForm';
 import { LoadingSpinner } from './components/LoadingSpinner';
 
 export default function Index() {
@@ -87,7 +87,7 @@ export default function Index() {
             shadowRadius={6}
             backgroundColor='white'
           >
-            <LeftPanel />
+            <SideNews />
           </Box>
           {/* MIDDLE CONTAINER */}
           <Box width={isMobile ? width : width * 0.5}>
@@ -107,7 +107,7 @@ export default function Index() {
         right="$1"
 
       >
-        <RightPanel handleParams={handleSearchParams} />
+        <CalendarForm handleParams={handleSearchParams} />
       </Box>
 
       {/* FOOTER */}
