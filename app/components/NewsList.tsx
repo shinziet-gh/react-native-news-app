@@ -2,7 +2,7 @@ import { Box, Pressable } from "@gluestack-ui/themed";
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
-import NewsComponent from './NewsComponent';
+import NewsDetail from './NewsDetail';
 import { getEnv } from "../env";
 import { Articles } from "../articles";
 import { getArticles } from "../getArticles";
@@ -14,15 +14,11 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
     const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
 
-    const [isLoading, setIsLoading] = useState(true);
-
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
     useEffect(() => {
         let { category, searchQuery, fromDate, toDate } = params;
-
-        setIsLoading(true); //Show loading spinner
 
         fetchNews(category, searchQuery, fromDate, toDate);
 
@@ -48,8 +44,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             setHeadlineStory(articles[0]);
             setNewsArticles(articles?.slice(1));
 
-
-            setIsLoading(false); //Hide loading spinner
         } catch (error) {
             console.error(error);
         }
@@ -62,7 +56,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     return (
         <Box px="$4">
-            <NewsComponent news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
+            <NewsDetail news={headlineStory} isHeadlineStory={true} />
 
             {newsArticles?.map((news, index) => (
                 <Pressable
@@ -75,7 +69,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     my="$4"
                     marginBottom={0}
                 >
-                    <NewsComponent news={news} isHeadlineStory={false} isLoading={isLoading} />
+                    <NewsDetail news={news} isHeadlineStory={false} />
                 </Pressable>
             ))}
         </Box>

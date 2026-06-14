@@ -8,12 +8,13 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 - **Express** — backend server
 - **News API** — news content via REST API
 - **npm** — package manager for installing libraries
-- **typescript** - type annotation syntax
+- **typescript** - JS syntax for type annotation
 
 ## Key Learnings
 
 - Use component state and events
 - Use React Hook to re-render a component and update its output
+- Use React Suspense to show loading spinner while data is being fetched
 
 ## Setup
 

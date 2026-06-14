@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, Suspense } from 'react'
 import { View, ScrollView } from "react-native";
 import NavigationBar from './components/NavigationBar';
 import SocialMedia from './components/SocialMedia';
-import NewsPage from './components/NewsPage';
+import NewsList from './components/NewsList';
 import { useResponsive } from './hooks/UseResponsive';
 import SearchBar from './components/SearchBar';
 import { Box, HStack, Text } from '@gluestack-ui/themed';
 import LeftPanel from './components/LeftPanel';
 import RightPanel from './components/RightPanel';
+import { LoadingSpinner } from './components/LoadingSpinner';
 
 export default function Index() {
 
@@ -90,7 +91,9 @@ export default function Index() {
           </Box>
           {/* MIDDLE CONTAINER */}
           <Box width={isMobile ? width : width * 0.5}>
-            <NewsPage params={params} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <NewsList params={params} />
+            </Suspense>
           </Box>
         </HStack>
       </ScrollView>
