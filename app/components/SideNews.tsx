@@ -3,6 +3,7 @@ import { Box } from "@gluestack-ui/themed";
 import CategoryNewsList from "./CategoryNewsList";
 import RecentNewsList from "./RecentNewsList";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { ErrorBoundary } from "./ErrorBoundary"
 
 export default function SideNews() {
 
@@ -10,11 +11,15 @@ export default function SideNews() {
         <Box gap="$12" paddingHorizontal="$12" marginTop="$6">
 
             <Suspense fallback={<LoadingSpinner />}>
-                <RecentNewsList />
+                <ErrorBoundary>
+                    <RecentNewsList />
+                </ErrorBoundary>
             </Suspense>
 
             <Suspense fallback={<LoadingSpinner />}>
-                <CategoryNewsList />
+                <ErrorBoundary>
+                    <CategoryNewsList />
+                </ErrorBoundary>
             </Suspense>
 
         </Box>

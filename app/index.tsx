@@ -9,7 +9,7 @@ import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
 import CalendarForm from './components/CalendarForm';
 import { LoadingSpinner } from './components/LoadingSpinner';
-
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export default function Index() {
 
@@ -94,7 +94,9 @@ export default function Index() {
           {/* HEADLINE NEWS */}
           <Box width={isMobile ? width : width * 0.5}>
             <Suspense fallback={<LoadingSpinner />}>
-              <NewsList params={params} />
+              <ErrorBoundary>
+                <NewsList params={params} />
+              </ErrorBoundary>
             </Suspense>
           </Box>
         </HStack>
