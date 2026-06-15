@@ -41,6 +41,7 @@ export default function CategoryNewsList() {
                 [category]: articles
             }));
 
+            setIsLoading(false); //Hide loading spinner
 
         } catch (error) {
             console.error(error);
@@ -50,7 +51,6 @@ export default function CategoryNewsList() {
     useEffect(() => {
         setIsLoading(true); //Show loading spinner
         categories.forEach(category => fetchNewsByCategory(category));
-        setIsLoading(false); //Hide loading spinner
 
     }, []);
 

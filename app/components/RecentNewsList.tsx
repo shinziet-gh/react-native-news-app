@@ -18,6 +18,7 @@ export default function RecentNewsList() {
 
             const articles = await getArticles(apiUrl);
             setLatestNews(articles);
+            setIsLoading(false); //Hide loading spinner
 
         } catch (error) {
             console.error(error);
@@ -28,9 +29,6 @@ export default function RecentNewsList() {
         setIsLoading(true); //Show loading spinner
 
         fetchLatestNews();
-
-        setIsLoading(false); //Hide loading spinner
-
     }, []);
 
 

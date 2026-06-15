@@ -25,8 +25,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
         setIsLoading(true); //Show loading spinner
         fetchNews(category, searchQuery, fromDate, toDate);
-        setIsLoading(false); //Hide loading spinner
-
 
     }, [params]);
 
@@ -50,6 +48,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             setHeadlineStory(articles[0]);
             setNewsArticles(articles?.slice(1));
 
+            setIsLoading(false); //Hide loading spinner
         } catch (error) {
             console.error(error);
         }
