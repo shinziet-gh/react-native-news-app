@@ -45,7 +45,6 @@ app.get('/api/news/category=:category', async (req, res) => {
         res.json(response);
     });
 
-    await delay();
 });
 
 //To query /v2/everything by published date
@@ -60,7 +59,6 @@ app.get('/api/news/newest', async (req, res) => {
         res.json(response);
     })
 
-    await delay();
 });
 
 //To query /v2/everything by search query AND/OR dates
@@ -78,15 +76,7 @@ app.get('/api/news/search', async (req, res) => {
         res.json(response);
     });
 
-    await delay();
 });
-
-// Simulate a delay
-async function delay() {
-    await new Promise((resolve) =>
-        setTimeout(resolve, 1000),
-    );
-}
 
 // Run the server
 if (process.env.NODE_ENV != "production") {

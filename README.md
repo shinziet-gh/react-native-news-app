@@ -14,7 +14,6 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 
 - Use component state and events
 - Use React Hook to re-render a component and update its output
-- Use React Suspense to show loading spinner while data is being fetched
 - Use React Error Boundary for error handling
 
 ## Setup

@@ -6,6 +6,7 @@ import { Button, Box, Text, HStack, VStack, Image, Pressable, Spinner } from "@g
 import { getEnv } from '../env';
 import { Articles } from '../articles';
 import { getArticles } from '../getArticles';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export default function CategoryNewsList() {
     const base_url = getEnv("BASE_URL");
@@ -16,6 +17,9 @@ export default function CategoryNewsList() {
     const { width, height, isMobile } = useResponsive();
 
     const [isHovered, setIsHovered] = useState(false);
+
+    // Loading spinner state
+    const [isLoading, setIsLoading] = useState(true);
 
     //List of categories
     const categories = [
@@ -44,7 +48,9 @@ export default function CategoryNewsList() {
     };
 
     useEffect(() => {
+        setIsLoading(true); //Show loading spinner
         categories.forEach(category => fetchNewsByCategory(category));
+        setIsLoading(false); //Hide loading spinner
 
     }, []);
 
@@ -76,25 +82,32 @@ export default function CategoryNewsList() {
                                     handleClick(news.url)
                                 }
                             }}>
-                                <Image
-                                    source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                                    alt="news image"
-                                    w="$full"
-                                    h="$full"
-                                    aspectRatio={16 / 9}
-                                    resizeMode="contain"
-                                    backgroundColor='#525252'
-                                />
-                                <Text
-                                    bold
-                                    fontSize={"$xl"}
-                                >
-                                    {news?.title}
-                                </Text>
-                                <Text color="$gray600">
-                                    {news?.source?.name || "Unknown"} • {" "}
-                                    {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString() : ''}
-                                </Text>
+                                {isLoading ? (
+                                    <LoadingSpinner />
+                                ) : (
+                                    <>
+
+                                        <Image
+                                            source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                            alt="news image"
+                                            w="$full"
+                                            h="$full"
+                                            aspectRatio={16 / 9}
+                                            resizeMode="contain"
+                                            backgroundColor='#525252'
+                                        />
+                                        <Text
+                                            bold
+                                            fontSize={"$xl"}
+                                        >
+                                            {news?.title}
+                                        </Text>
+                                        <Text color="$gray600">
+                                            {news?.source?.name || "Unknown"} • {" "}
+                                            {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString() : ''}
+                                        </Text>
+                                    </>
+                                )}
                             </Pressable>
                         </VStack >
                     ))}

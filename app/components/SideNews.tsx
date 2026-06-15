@@ -10,17 +10,13 @@ export default function SideNews() {
     return (
         <Box gap="$12" paddingHorizontal="$12" marginTop="$6">
 
-            <Suspense fallback={<LoadingSpinner />}>
-                <ErrorBoundary>
-                    <RecentNewsList />
-                </ErrorBoundary>
-            </Suspense>
+            <ErrorBoundary>
+                <RecentNewsList />
+            </ErrorBoundary>
 
-            <Suspense fallback={<LoadingSpinner />}>
-                <ErrorBoundary>
-                    <CategoryNewsList />
-                </ErrorBoundary>
-            </Suspense>
+            <ErrorBoundary>
+                <CategoryNewsList />
+            </ErrorBoundary>
 
         </Box>
     )

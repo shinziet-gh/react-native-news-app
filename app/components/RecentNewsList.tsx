@@ -4,11 +4,13 @@ import { Button, Box, Text, HStack, VStack, Image, Pressable, Spinner } from "@g
 import { Articles } from '../articles';
 import { getArticles } from '../getArticles';
 import { getEnv } from '../env';
-
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export default function RecentNewsList() {
     const base_url = getEnv("BASE_URL");
     const [latestNews, setLatestNews] = useState<Articles[]>([]);
+    // Loading spinner state
+    const [isLoading, setIsLoading] = useState(true);
 
     const fetchLatestNews = async () => {
         try {
@@ -23,8 +25,12 @@ export default function RecentNewsList() {
     }
 
     useEffect(() => {
+        setIsLoading(true); //Show loading spinner
 
         fetchLatestNews();
+
+        setIsLoading(false); //Hide loading spinner
+
     }, []);
 
 
@@ -42,35 +48,43 @@ export default function RecentNewsList() {
                     }
                 }}
                 >
-                    <Image
-                        source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                        alt="news image"
-                        w="$full"
-                        h="$full"
-                        aspectRatio={5 / 3}
-                        resizeMode="contain"
-                        backgroundColor='black'
-                    />
+                    {isLoading ? (
+                        <LoadingSpinner />
+                    ) : (
+                        <>
 
-                    <HStack
-                        gap="$3"
-                        position="absolute"
-                        bottom="$0"
-                        left="$0"
-                        right="$0"
+                            <Image
+                                source={{ uri: news.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                alt="news image"
+                                w="$full"
+                                h="$full"
+                                aspectRatio={5 / 3}
+                                resizeMode="contain"
+                                backgroundColor='black'
+                            />
 
-                    >
-                        <VStack w="$full" p="$3" gap="$3" backgroundColor="rgba(255,255,255,0.8)">
-                            <Text bold fontSize="$xl" marginRight="$12">
-                                {news.title}
-                            </Text>
-                            <Text>
-                                {news.source?.name || "Unknown"} • {" "}
-                                {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
-                            </Text>
-                        </VStack>
+                            <HStack
+                                gap="$3"
+                                position="absolute"
+                                bottom="$0"
+                                left="$0"
+                                right="$0"
 
-                    </HStack>
+                            >
+                                <VStack w="$full" p="$3" gap="$3" backgroundColor="rgba(255,255,255,0.8)">
+                                    <Text bold fontSize="$xl" marginRight="$12">
+                                        {news.title}
+                                    </Text>
+                                    <Text>
+                                        {news.source?.name || "Unknown"} • {" "}
+                                        {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                    </Text>
+                                </VStack>
+
+                            </HStack>
+
+                        </>
+                    )}
                 </Pressable>
             ))}
         </>

@@ -14,13 +14,19 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
     const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
 
+    // Loading spinner state
+    const [isLoading, setIsLoading] = useState(true);
+
     //Get window dimensions
     const { width, height, isMobile } = useResponsive();
 
     useEffect(() => {
         let { category, searchQuery, fromDate, toDate } = params;
 
+        setIsLoading(true); //Show loading spinner
         fetchNews(category, searchQuery, fromDate, toDate);
+        setIsLoading(false); //Hide loading spinner
+
 
     }, [params]);
 
@@ -56,7 +62,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     return (
         <Box px="$4">
-            <NewsDetail news={headlineStory} isHeadlineStory={true} />
+            <NewsDetail news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
             {newsArticles?.map((news, index) => (
                 <Pressable
@@ -69,7 +75,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     my="$4"
                     marginBottom={0}
                 >
-                    <NewsDetail news={news} isHeadlineStory={false} />
+                    <NewsDetail news={news} isHeadlineStory={false} isLoading={isLoading} />
                 </Pressable>
             ))}
         </Box>

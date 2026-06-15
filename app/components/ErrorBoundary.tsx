@@ -12,7 +12,7 @@ export function ErrorBoundary({
         <ReactErrorBoundary
             fallbackRender={({ error, resetErrorBoundary }) => (
                 <div role="alert">
-                    <h3>Oops.. Something went wrong :&#40</h3>
+                    <h3>Oops.. Something went wrong :(</h3>
                     <p> {(error as Error)?.message || "Unknown error"} </p>
                     <button onClick={resetErrorBoundary}>Retry</button>
                 </div>

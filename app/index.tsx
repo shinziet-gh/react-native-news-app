@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react'
+import React, { useState } from 'react'
 import { Box, HStack, Text } from '@gluestack-ui/themed';
 import { View, ScrollView } from "react-native";
 import { useResponsive } from './hooks/UseResponsive';
@@ -8,7 +8,6 @@ import SearchBar from './components/SearchBar';
 import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
 import CalendarForm from './components/CalendarForm';
-import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 export default function Index() {
@@ -93,11 +92,9 @@ export default function Index() {
 
           {/* HEADLINE NEWS */}
           <Box width={isMobile ? width : width * 0.5}>
-            <Suspense fallback={<LoadingSpinner />}>
-              <ErrorBoundary>
-                <NewsList params={params} />
-              </ErrorBoundary>
-            </Suspense>
+            <ErrorBoundary>
+              <NewsList params={params} />
+            </ErrorBoundary>
           </Box>
         </HStack>
       </ScrollView>
