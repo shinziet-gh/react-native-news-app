@@ -1,14 +1,15 @@
 import React, { useState, Suspense } from 'react'
+import { Box, HStack, Text } from '@gluestack-ui/themed';
 import { View, ScrollView } from "react-native";
+import { useResponsive } from './hooks/UseResponsive';
 import NavigationBar from './components/NavigationBar';
 import SocialMedia from './components/SocialMedia';
-import { useResponsive } from './hooks/UseResponsive';
 import SearchBar from './components/SearchBar';
-import { Box, HStack, Text } from '@gluestack-ui/themed';
 import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
 import CalendarForm from './components/CalendarForm';
 import { LoadingSpinner } from './components/LoadingSpinner';
+
 
 export default function Index() {
 
@@ -79,7 +80,7 @@ export default function Index() {
 
       <ScrollView>
         <HStack px="$5">
-          {/* LEFT CONTAINER */}
+          {/* SIDE NEWS */}
           <Box
             width={width * 0.3}
             display={isMobile ? 'none' : 'flex'}
@@ -89,7 +90,8 @@ export default function Index() {
           >
             <SideNews />
           </Box>
-          {/* MIDDLE CONTAINER */}
+
+          {/* HEADLINE NEWS */}
           <Box width={isMobile ? width : width * 0.5}>
             <Suspense fallback={<LoadingSpinner />}>
               <NewsList params={params} />
@@ -98,7 +100,7 @@ export default function Index() {
         </HStack>
       </ScrollView>
 
-      {/* RIGHT CONTAINER */}
+      {/* FILTER FORM */}
       <Box
         width={width * 0.2}
         display={isMobile ? 'none' : 'flex'}

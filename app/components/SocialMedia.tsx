@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Text, Button, ButtonIcon } from '@gluestack-ui/themed'
-import { FacebookIcon, XIcon, WhatsappIcon, InstagramIcon } from './Icons'
+import { FacebookIcon, XIcon, WhatsappIcon, InstagramIcon } from './SocialMediaIcons'
 
 export default function SocialMedia() {
     const socialIcons = [FacebookIcon, XIcon, WhatsappIcon, InstagramIcon];
