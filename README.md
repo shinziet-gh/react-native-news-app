@@ -9,6 +9,7 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 - **News API** — news content via REST API
 - **npm** — package manager for installing libraries
 - **typescript** - JS syntax for type annotation
+- **react-error-boundary** - JS library to catch errors anywhere in the child component tree
 
 ## Key Learnings
 
@@ -41,7 +42,6 @@ A React Native news app with a Node.js backend that fetches and displays the lat
 The backend will run at `http://localhost:3000`.
 
 ### Frontend
-
 
 1. Navigate to the `app/` folder.
 
