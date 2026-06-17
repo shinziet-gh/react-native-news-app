@@ -1,4 +1,4 @@
-import { Box, HStack, Text, VStack } from '@gluestack-ui/themed';
+import { Box, HStack, Text, VStack, Pressable } from '@gluestack-ui/themed';
 import NavigationBar from './NavigationBar';
 import SocialMedia from './SocialMedia';
 import SearchBar from './SearchBar';
@@ -10,27 +10,20 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-    const handleClick = (isOpen: boolean) => {
-        setIsMenuOpen(isOpen)
-    }
-
-
     return (
         <Box>
             {isDesktop ?
                 (
                     <HStack justifyContent='space-between' alignItems='center' backgroundColor='white' px="$12" py="$2" m="$5">
-                        <Box style={{ display: isMobile ? 'none' : 'flex' }} >
-                            <Text bold fontSize="$xl"> DailyNews</Text>
-                        </Box>
+                        <Text bold fontSize="$xl"> DailyNews</Text>
 
                         <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
-                            <NavigationBar handleClick={handleTabClick} updateHeader={handleClick} />
+                            <NavigationBar handleClick={handleTabClick} isMenuOpen={isMenuOpen} />
                             <Box>
                                 <SearchBar placeholder='Search News...' barWidth='$full' handleEnter={handleNavSearchEnter} />
                             </Box>
                         </HStack>
-                        <Box style={{ display: isMobile ? 'none' : 'flex' }}>
+                        <Box>
                             <SocialMedia />
                         </Box>
                     </HStack>
@@ -39,20 +32,39 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
                 (
                     <VStack display='flex' backgroundColor='white' px="$12" py="$2" gap="$2">
                         {isMenuOpen ? (
-                            <HStack justifyContent='space-between' backgroundColor='white'>
-                                <NavigationBar handleClick={handleTabClick} updateHeader={handleClick} />
-                            </HStack>
+                            <VStack>
+                                <HStack justifyContent='flex-start' alignItems='center' backgroundColor='white'>
+                                    <Pressable
+                                        onPress={() => setIsMenuOpen(!isMenuOpen)}
+                                        p="$2"
+                                    >
+                                        <Text fontSize="$2xl" fontWeight="700">☰</Text>
+                                    </Pressable>
+
+                                    <Box>
+                                        <Text bold fontSize="$xl"> DailyNews</Text>
+                                    </Box>
+                                    <Box style={{ display: isMobile ? 'none' : 'flex', marginLeft: 'auto' }}>
+                                        <SocialMedia />
+                                    </Box>
+
+                                </HStack>
+                                <NavigationBar handleClick={handleTabClick} isMenuOpen={isMenuOpen} />
+
+                            </VStack>
                         ) :
                             (
-                                <HStack justifyContent='space-between' alignItems='center' backgroundColor='white'>
-                                    <NavigationBar handleClick={handleTabClick} updateHeader={handleClick} />
-
-                                    <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
-                                        <Box style={{ display: isMobile ? 'none' : 'flex' }} >
-                                            <Text bold fontSize="$xl"> DailyNews</Text>
-                                        </Box>
-                                    </HStack>
-                                    <Box style={{ display: isMobile ? 'none' : 'flex' }}>
+                                <HStack justifyContent='flex-start' alignItems='center' backgroundColor='white'>
+                                    <Pressable
+                                        onPress={() => setIsMenuOpen(!isMenuOpen)}
+                                        p="$2"
+                                    >
+                                        <Text fontSize="$2xl" fontWeight="700">☰</Text>
+                                    </Pressable>
+                                    <Box>
+                                        <Text bold fontSize="$xl"> DailyNews</Text>
+                                    </Box>
+                                    <Box style={{ display: isMobile ? 'none' : 'flex', marginLeft: 'auto' }}>
                                         <SocialMedia />
                                     </Box>
                                 </HStack>
