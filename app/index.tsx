@@ -2,14 +2,11 @@ import React, { useState } from 'react'
 import { Box, HStack, Text } from '@gluestack-ui/themed';
 import { View, ScrollView } from "react-native";
 import { useResponsive } from './hooks/UseResponsive';
-import NavigationBar from './components/NavigationBar';
-import SocialMedia from './components/SocialMedia';
-import SearchBar from './components/SearchBar';
+import Header from './components/Header';
 import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
 import CalendarForm from './components/CalendarForm';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import Header from './components/Header';
 
 export default function Index() {
 
@@ -61,44 +58,44 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* NAVIGATION BAR */}
-      <Box position='relative' top={0}>
-        <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
-      </Box>
+      {/* HEADER */}
+      <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
 
-      <ScrollView>
-        <HStack px="$5">
-          {/* SIDE NEWS */}
-          <Box
-            width={width * 0.3}
-            display={isTablet || isMobile ? 'none' : 'flex'}
-            shadowOpacity={0.1}
-            shadowRadius={6}
-            backgroundColor='white'
-          >
-            <SideNews />
-          </Box>
+      <View style={{ flex: 1, position: "relative" }}>
+        <ScrollView>
+          <HStack px="$5" py="$5">
+            {/* SIDE NEWS */}
+            <Box
+              width={width * 0.3}
+              display={isTablet || isMobile ? 'none' : 'flex'}
+              shadowOpacity={0.1}
+              shadowRadius={6}
+              backgroundColor='white'
+            >
+              <SideNews />
+            </Box>
 
-          {/* HEADLINE NEWS */}
-          <Box width={isTablet || isMobile ? width * 0.7 : width}>
-            <ErrorBoundary>
-              <NewsList params={params} />
-            </ErrorBoundary>
-          </Box>
-        </HStack>
-      </ScrollView>
+            {/* HEADLINE NEWS */}
+            <Box width={isDesktop ? width * 0.5 : isTablet ? width * 0.7 : width * 0.95}>
+              <ErrorBoundary>
+                <NewsList params={params} />
+              </ErrorBoundary>
+            </Box>
+          </HStack>
+        </ScrollView>
 
-      {/* FILTER FORM */}
-      <Box
-        width={isTablet ? width * 0.3 : 'auto'}
-        display={isMobile ? 'none' : 'flex'}
-        position='absolute'
-        top={isTablet || isMobile ? '40%' : '20%'}
-        right="$1"
+        {/* FILTER FORM */}
+        <Box
+          width={isTablet ? width * 0.3 : 'auto'}
+          display={isMobile ? 'none' : 'flex'}
+          position='absolute'
+          top={'20%'}
+          right="$1"
 
-      >
-        <CalendarForm handleParams={handleSearchParams} />
-      </Box>
+        >
+          <CalendarForm handleParams={handleSearchParams} />
+        </Box>
+      </View>
 
       {/* FOOTER */}
       <View
