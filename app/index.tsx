@@ -65,6 +65,7 @@ export default function Index() {
       <Box position='relative' top={0}>
         <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
       </Box>
+
       <ScrollView>
         <HStack px="$5">
           {/* SIDE NEWS */}
@@ -79,7 +80,7 @@ export default function Index() {
           </Box>
 
           {/* HEADLINE NEWS */}
-          <Box width={isMobile ? width : width * 0.5}>
+          <Box width={isTablet || isMobile ? width * 0.7 : width}>
             <ErrorBoundary>
               <NewsList params={params} />
             </ErrorBoundary>
@@ -89,10 +90,10 @@ export default function Index() {
 
       {/* FILTER FORM */}
       <Box
-        width={width * 0.2}
+        width={isTablet ? width * 0.3 : 'auto'}
         display={isMobile ? 'none' : 'flex'}
         position='absolute'
-        top="20%"
+        top={isTablet || isMobile ? '40%' : '20%'}
         right="$1"
 
       >

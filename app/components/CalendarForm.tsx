@@ -8,7 +8,7 @@ import { Pressable } from "react-native";
 export default function CalendarForm({ handleParams }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; }>) {
 
     //Get window dimensions
-    const { width, height, isMobile } = useResponsive();
+    const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     //State variables for search query
     const [searchQuery, setSearchQuery] = useState("");
@@ -176,7 +176,7 @@ export default function CalendarForm({ handleParams }: Readonly<{ handleParams: 
             borderRadius="$sm"
         >
             <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
-            <SearchBar placeholder="Enter keyword(s)..." barWidth="$full" setKeyword={setSearchQuery} />
+            <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter keyword(s)..."} barWidth="$full" setKeyword={setSearchQuery} />
             <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
                 <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
                     <InputSlot className="pl-3">
