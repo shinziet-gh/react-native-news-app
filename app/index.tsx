@@ -9,11 +9,12 @@ import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
 import CalendarForm from './components/CalendarForm';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import Header from './components/Header';
 
 export default function Index() {
 
   //Get window dimensions
-  const { width, height, isMobile } = useResponsive();
+  const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
   //State variable to store the selected news category
   const [params, setParams] = useState({ category: "general", searchQuery: "", fromDate: "", toDate: "" });
@@ -61,28 +62,15 @@ export default function Index() {
   return (
     <View style={{ flex: 1 }}>
       {/* NAVIGATION BAR */}
-      <HStack justifyContent='space-between' alignItems='center' backgroundColor='white' px="$12" py="$2" m="$5">
-        <Box style={{ display: isMobile ? 'none' : 'flex' }} >
-          <Text bold fontSize="$xl"> DailyNews</Text>
-        </Box>
-
-        <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
-          <NavigationBar handleClick={handleTabClick} />
-          <Box style={{ display: isMobile ? 'none' : 'flex' }}>
-            <SearchBar placeholder='Search News...' barWidth='$full' handleEnter={handleNavSearchEnter} />
-          </Box>
-        </HStack>
-        <Box style={{ display: isMobile ? 'none' : 'flex' }}>
-          <SocialMedia />
-        </Box>
-      </HStack>
-
+      <Box position='relative' top={0}>
+        <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
+      </Box>
       <ScrollView>
         <HStack px="$5">
           {/* SIDE NEWS */}
           <Box
             width={width * 0.3}
-            display={isMobile ? 'none' : 'flex'}
+            display={isTablet || isMobile ? 'none' : 'flex'}
             shadowOpacity={0.1}
             shadowRadius={6}
             backgroundColor='white'

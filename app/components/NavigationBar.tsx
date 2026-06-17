@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useResponsive } from '../hooks/UseResponsive';
 import { HStack, VStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 
-export default function NavigationBar(props: Readonly<{ handleClick: (arg0: string) => void; }>) {
+export default function NavigationBar({ handleClick, updateHeader }: { handleClick: (arg0: string) => void; updateHeader: (arg0: boolean) => void }) {
     const [activeBtn, setActiveBtn] = useState('general');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    useEffect(() => {
+        updateHeader(isMenuOpen)
+
+    }, [isMenuOpen])
 
     //Get window dimensions
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
@@ -21,7 +26,7 @@ export default function NavigationBar(props: Readonly<{ handleClick: (arg0: stri
     //Pass category to parent via callback prop
     const handleTabPress = (tabKey: string) => {
         setActiveBtn(tabKey);
-        props.handleClick(tabKey);
+        handleClick(tabKey);
         if (isMobile || isTablet) {
             setIsMenuOpen(false);
         }
@@ -45,7 +50,26 @@ export default function NavigationBar(props: Readonly<{ handleClick: (arg0: stri
 
                     {/* Tablet/Mobile Mode */}
                     {isMenuOpen && (
-                        <VStack space="xs" px="$4" pb="$3" bg="$warmGray50">
+                        <VStack
+                            backgroundColor="white"
+                            borderBottomWidth={1}
+                            borderColor="#eee"
+                            padding="$4"
+                            style={{
+                                position: 'relative',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                zIndex: 9999,
+                                width: width * 0.9
+                            }}
+                        >
+                            <HStack justifyContent="flex-end" pb="$2">
+                                <Pressable onPress={() => setIsMenuOpen(false)} p="$2">
+                                    <Text fontSize="$2xl" fontWeight="700">✕</Text>
+                                </Pressable>
+                            </HStack>
+
                             {tabs.map((tab) => {
                                 const isActive = activeBtn === tab.key;
                                 return (
@@ -55,6 +79,7 @@ export default function NavigationBar(props: Readonly<{ handleClick: (arg0: stri
                                         bg={isActive ? 'black' : 'transparent'}
                                         borderRadius="$sm"
                                         px="$4"
+                                        width="$full"
                                     >
                                         <Box py="$3" alignItems="flex-start">
                                             <Text
