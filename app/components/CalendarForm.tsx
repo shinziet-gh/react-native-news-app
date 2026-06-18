@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { useResponsive } from "../hooks/UseResponsive";
 import Animated, { FadeIn, SequencedTransition, CurvedTransition } from 'react-native-reanimated';
 
-export default function CalendarForm({ handleParams, handleClick }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; handleClick: (isCloseVal: boolean) => void }>) {
+export default function CalendarForm({ handleParams, isClose, handleClick }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; isClose: boolean, handleClick: (isCloseVal: boolean) => void }>) {
 
     //Get window dimensions
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
@@ -15,7 +15,6 @@ export default function CalendarForm({ handleParams, handleClick }: Readonly<{ h
 
     //State variables for search query
     const [searchQuery, setSearchQuery] = useState("");
-    const [isClose, setIsClose] = useState<boolean>(false);
 
     //Flag for calendar display & click event
     const [showCalendar, setShowCalendar] = useState(false);
@@ -165,9 +164,9 @@ export default function CalendarForm({ handleParams, handleClick }: Readonly<{ h
     }
 
     return (
-        <Animated.View layout={!isClose ? SequencedTransition : CurvedTransition.duration(200)} >
+        <Animated.View layout={isClose ? CurvedTransition.duration(200) : SequencedTransition} >
             <HStack
-                width={isTablet && isClose ? "$0.5" : "$full"}
+                width={isTablet && isClose ? "$1" : "$full"}
                 borderTopWidth="$2"
                 borderTopColor="#52525223"
                 borderBottomWidth="$1"
@@ -179,8 +178,9 @@ export default function CalendarForm({ handleParams, handleClick }: Readonly<{ h
                 borderRadius="$sm"
                 backgroundColor="white"
                 height={height * 0.35}
+                display="flex"
             >
-                <Pressable onPress={() => { setIsClose(!isClose); handleClick(!isClose) }}>
+                <Pressable onPress={() => { handleClick(!isClose) }}>
                     <Text
                         p="$2"
                         height="$full"
