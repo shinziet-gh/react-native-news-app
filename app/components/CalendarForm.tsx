@@ -1,17 +1,21 @@
-import { Box, HStack, Text, Input, Button, InputIcon, InputSlot, CalendarDaysIcon, InputField, VStack } from "@gluestack-ui/themed";
+import { Box, HStack, Text, Input, Button, InputIcon, InputSlot, CalendarDaysIcon, InputField, VStack, Pressable } from "@gluestack-ui/themed";
 import { useState, useEffect, useRef } from "react";
 import { Calendar, DateData } from 'react-native-calendars';
 import SearchBar from "./SearchBar";
 import { useResponsive } from "../hooks/UseResponsive";
-import { Pressable } from "react-native";
+import Animated, { FadeIn, SequencedTransition, CurvedTransition } from 'react-native-reanimated';
 
-export default function CalendarForm({ handleParams }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; }>) {
+export default function CalendarForm({ handleParams, handleClick }: Readonly<{ handleParams: (params: { searchQuery: string; fromDate: string; toDate: string; }) => void; handleClick: (isCloseVal: boolean) => void }>) {
 
     //Get window dimensions
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
+    //Layout animation
+    const AnimatedHStack = Animated.createAnimatedComponent(HStack);
+
     //State variables for search query
     const [searchQuery, setSearchQuery] = useState("");
+    const [isClose, setIsClose] = useState<boolean>(false);
 
     //Flag for calendar display & click event
     const [showCalendar, setShowCalendar] = useState(false);
@@ -161,60 +165,90 @@ export default function CalendarForm({ handleParams }: Readonly<{ handleParams: 
     }
 
     return (
-        <Box
-            width="$5/6"
-            alignSelf="center"
-            gap="$3"
-            p="$6"
-            backgroundColor="white"
-            borderTopWidth="$4"
-            borderTopColor="black"
-            borderBottomWidth="$1"
-            borderBottomColor="#52525250"
-            shadowOpacity={0.1}
-            shadowRadius={6}
-            borderRadius="$sm"
-        >
-            <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
-            <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter keyword(s)..."} barWidth="$full" setKeyword={setSearchQuery} />
-            <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
-                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
-                    <InputSlot className="pl-3">
-                        <InputIcon as={CalendarDaysIcon} />
-                    </InputSlot>
-                    <InputField placeholder={startDate ? startDate?.dateString.slice(5, 10) + "-" + startDate?.dateString.slice(0, 4) : "From"} />
-                </Input>
-            </Pressable>
+        <Animated.View layout={!isClose ? SequencedTransition : CurvedTransition.duration(200)} >
+            <HStack
+                width={isTablet && isClose ? "$0.5" : "$full"}
+                borderTopWidth="$2"
+                borderTopColor="#52525223"
+                borderBottomWidth="$1"
+                borderColor="#52525223"
+                shadowOpacity={0.1}
+                shadowRadius={6}
+                borderTopLeftRadius="$lg"
+                borderBottomLeftRadius="$lg"
+                borderRadius="$sm"
+                backgroundColor="white"
+                height={height * 0.35}
+            >
+                <Pressable onPress={() => { setIsClose(!isClose); handleClick(!isClose) }}>
+                    <Text
+                        p="$2"
+                        height="$full"
+                        bgColor="black"
+                        color="white"
+                        alignContent="center"
+                        borderTopLeftRadius="$lg"
+                        borderBottomLeftRadius="$lg"
+                        fontSize="$sm"
+                    >{isClose ? '◀' : '▶'}</Text>
+                </Pressable>
 
-            <Pressable onPress={() => { setShowCalendar(true); setToDateClicked(true) }}>
-                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
-                    <InputSlot className="pl-3">
-                        <InputIcon as={CalendarDaysIcon} />
-                    </InputSlot>
-                    <InputField placeholder={endDate ? endDate?.dateString.slice(5, 10) + "-" + endDate?.dateString.slice(0, 4) : "To"} />
-                </Input>
-            </Pressable>
+                {!isClose && (
+                    <Animated.View
+                        entering={FadeIn.duration(300)}
+                    >
+                        <VStack
+                            width="$5/6"
+                            alignSelf="center"
+                            gap="$3"
+                            paddingVertical="$6"
+                            paddingLeft="$6"
+                            minHeight={height * 0.35}
+                        >
+                            <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
+                            <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter keyword(s)..."} barWidth="$full" setKeyword={setSearchQuery} />
+                            <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
+                                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
+                                    <InputSlot className="pl-3">
+                                        <InputIcon as={CalendarDaysIcon} />
+                                    </InputSlot>
+                                    <InputField size={isDesktop ? "lg" : "sm"} placeholder={startDate ? startDate?.dateString.slice(5, 10) + "-" + startDate?.dateString.slice(0, 4) : "From"} />
+                                </Input>
+                            </Pressable>
 
-            <Box ref={calendarRef}>
-                <Calendar
-                    markingType={'period'}
-                    onDayPress={(date: DateData) => {
-                        handleDateClick(date);
-                    }}
-                    maxDate={maxDate.toISOString()}
-                    markedDates={markedDates}
-                    disableAllTouchEventsForDisabledDays={true}
+                            <Pressable onPress={() => { setShowCalendar(true); setToDateClicked(true) }}>
+                                <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
+                                    <InputSlot className="pl-3">
+                                        <InputIcon as={CalendarDaysIcon} />
+                                    </InputSlot>
+                                    <InputField size={isDesktop ? "lg" : "sm"} placeholder={endDate ? endDate?.dateString.slice(5, 10) + "-" + endDate?.dateString.slice(0, 4) : "To"} />
+                                </Input>
+                            </Pressable>
 
-                    style={{
-                        display: showCalendar ? 'flex' : 'none',
-                        boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.1)",
-                    }}
-                />
-            </Box>
-            <Button w="$3/5" size="lg" bg="black" onPress={() => handleEnterBtn()}>
-                <Text color='white'>Search</Text>
-            </Button>
-        </Box>
+                            <Box ref={calendarRef}>
+                                <Calendar
+                                    markingType={'period'}
+                                    onDayPress={(date: DateData) => {
+                                        handleDateClick(date);
+                                    }}
+                                    maxDate={maxDate.toISOString()}
+                                    markedDates={markedDates}
+                                    disableAllTouchEventsForDisabledDays={true}
 
+                                    style={{
+                                        display: showCalendar ? 'flex' : 'none',
+                                        boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.1)",
+                                    }}
+                                />
+                            </Box>
+                            <Button size={isDesktop ? "lg" : "sm"} bg="black" onPress={() => handleEnterBtn()}>
+                                <Text color='white' size={isDesktop ? "lg" : "xs"}>Search</Text>
+                            </Button>
+                        </VStack>
+                    </Animated.View>
+                )}
+
+            </HStack >
+        </Animated.View>
     )
 }

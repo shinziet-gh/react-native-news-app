@@ -5,7 +5,7 @@ import { useResponsive } from './hooks/UseResponsive';
 import Header from './components/Header';
 import NewsList from './components/NewsList';
 import SideNews from './components/SideNews';
-import CalendarForm from './components/CalendarForm';
+import SideDrawer from './components/SideDrawer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 export default function Index() {
@@ -85,15 +85,7 @@ export default function Index() {
         </ScrollView>
 
         {/* FILTER FORM */}
-        <Box
-          width={isTablet ? width * 0.3 : 'auto'}
-          display={isMobile ? 'none' : 'flex'}
-          position='absolute'
-          top={'20%'}
-          right="$1"
-        >
-          <CalendarForm handleParams={handleSearchParams} />
-        </Box>
+        <SideDrawer handleParams={handleSearchParams} />
       </View>
 
       {/* FOOTER */}

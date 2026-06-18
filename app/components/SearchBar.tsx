@@ -1,7 +1,10 @@
 import { Heading, Input, InputField, InputIcon, InputSlot, SearchIcon, VStack } from "@gluestack-ui/themed";
 import React, { useState } from "react";
+import { useResponsive } from "../hooks/UseResponsive";
 
 export default function SearchBar({ placeholder, barWidth, handleEnter, setKeyword }: Readonly<{ placeholder: string, barWidth: string, handleEnter?: (arg0: string) => void; setKeyword?: (arg0: string) => void }>) {
+    //Get window dimensions
+    const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -19,6 +22,7 @@ export default function SearchBar({ placeholder, barWidth, handleEnter, setKeywo
                     <InputIcon as={SearchIcon} />
                 </InputSlot>
                 <InputField
+                    size={isDesktop ? "lg" : "sm"}
                     value={searchQuery}
                     placeholder={placeholder || ""}
                     onKeyPress={(event) => handleEnterSearch(event)}
