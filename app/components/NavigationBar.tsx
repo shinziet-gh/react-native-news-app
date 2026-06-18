@@ -25,6 +25,7 @@ export default function NavigationBar({ handleClick, isMenuOpen }: { handleClick
 
     return (
         <Box>
+            {/* Tablet or Mobile View */}
             {isMenuOpen && (isTablet || isMobile) ? (
                 <VStack
                     backgroundColor="white"
@@ -65,7 +66,7 @@ export default function NavigationBar({ handleClick, isMenuOpen }: { handleClick
                 </VStack>
 
             ) : (
-                /* Desktop Mode */
+                /* Desktop View */
                 <HStack alignItems="center" justifyContent='space-around' px="$4" py="$2">
                     {tabs.map((tab) => {
                         const isActive = activeBtn === tab.key;

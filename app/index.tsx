@@ -91,7 +91,6 @@ export default function Index() {
           position='absolute'
           top={'20%'}
           right="$1"
-
         >
           <CalendarForm handleParams={handleSearchParams} />
         </Box>

@@ -10,12 +10,9 @@ import { LoadingSpinner } from './LoadingSpinner';
 
 export default function CategoryNewsList() {
     const base_url = getEnv("BASE_URL");
+    const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     const [newsArticles, setNewsArticles] = useState<{ [key: string]: Articles[] }>({});
-
-    //Get window dimensions
-    const { width, height, isMobile } = useResponsive();
-
     const [isHovered, setIsHovered] = useState(false);
 
     // Loading spinner state
@@ -59,7 +56,7 @@ export default function CategoryNewsList() {
     }
 
     return (
-        <>
+        <Box gap="$3">
 
             {/* News Content by Category */}
             {categories.map((category, index) => (
@@ -99,10 +96,14 @@ export default function CategoryNewsList() {
                                         <Text
                                             bold
                                             fontSize={"$xl"}
+                                            fontSize={width > 1024 && width < 1400 ? "$md" : "$xl"}
                                         >
                                             {news?.title}
                                         </Text>
-                                        <Text color="$gray600">
+                                        <Text
+                                            color="$gray600"
+                                            fontSize={width > 1024 && width < 1400 ? "$sm" : "$md"}
+                                        >
                                             {news?.source?.name || "Unknown"} • {" "}
                                             {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString() : ''}
                                         </Text>
@@ -114,6 +115,6 @@ export default function CategoryNewsList() {
                 </Box>
             ))
             }
-        </ >
+        </Box>
     )
 }

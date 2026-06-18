@@ -3,7 +3,6 @@ import { Button, Box, Text, HStack, VStack, Image } from "@gluestack-ui/themed";
 import { useResponsive } from '../hooks/UseResponsive';
 import { Articles } from "../articles"
 import { LoadingSpinner } from './LoadingSpinner';
-import { buttonWidth, fontSizes } from './styles/styles';
 
 export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonly<{ news: Articles; isHeadlineStory: boolean, isLoading: boolean }>) {
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
@@ -18,7 +17,6 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
             shadowRadius={6}
             justifyContent='center'
         >
-
             {isLoading ? (
                 <LoadingSpinner />
             ) : (
@@ -39,43 +37,43 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
                     <VStack flex={1} alignSelf="stretch" px="$3" py="$3" space='xl' justifyContent='flex-start' >
                         <Text
                             bold
-                            fontSize={
-                                isMobile ? "$2xl" :
-                                    isTablet ? "$3xl" : "$4xl"
-                            }
+                            fontSize={isMobile ? "$lg" : isTablet ? "$xl" : "$2xl"}
                         >
                             {news?.title || ""}
                         </Text>
 
-                        <Text fontSize={
-                            isMobile ? "$xl" :
-                                isTablet ? "$2xl" : "$3xl"
-
-                        } color="$gray600">
-                            {news?.source?.name || "Unknown"} • {" "}
-                            {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                        <Text
+                            color="#9CA3AF"
+                            fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$xl"}
+                            fontWeight="$medium"
+                        >
+                            {news?.source?.name || "Unknown"}
+                            <Text
+                                color="#9CA3AF"
+                                fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$xl"}
+                            >
+                                {" "}• {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                            </Text>
                         </Text>
 
                         <Text
                             color="$gray700"
-                            numberOfLines={2}
-                            style={{ opacity: isHeadlineStory ? 0.9 : 1 }}
-                            display={isHeadlineStory ? 'none' : 'flex'}
-                            fontSize={
-                                isMobile ? "$2xl" :
-                                    isTablet ? "$3xl" : "$4xl"
-                            }
+                            numberOfLines={3}
+                            ellipsizeMode="clip"
+                            isTruncated={true}
+                            fontSize={isMobile ? "$xs" : "$sm"}
                         >
                             {news?.description || ""}
                         </Text>
 
                         {/* READ MORE BUTTON */}
-                        <Button size="lg" w={
-                            isMobile ? "$3/5" :
-                                isTablet ? "$1/3" : "$1/2"
-
-                        } alignSelf="flex-end" marginTop={'auto'} bg="black" >
-                            <Text color='white'>Read More</Text>
+                        <Button size={isMobile || isTablet ? "md" : "lg"}
+                            alignSelf="flex-end" marginTop={'auto'} bg="black" >
+                            <Text
+                                color='white'
+                                fontSize={isMobile ? "$sm" : "$md"}
+                            >
+                                Read More</Text>
                         </Button>
                     </VStack>
                 </>

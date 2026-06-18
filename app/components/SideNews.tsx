@@ -4,12 +4,13 @@ import CategoryNewsList from "./CategoryNewsList";
 import RecentNewsList from "./RecentNewsList";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { ErrorBoundary } from "./ErrorBoundary"
+import { useResponsive } from '../hooks/UseResponsive';
 
 export default function SideNews() {
+    const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     return (
-        <Box gap="$12" paddingHorizontal="$12" marginTop="$6">
-
+        <Box gap="$2" paddingHorizontal={width > 1024 && width < 1400 ? "$6" : "$12"} marginTop="$6">
             <ErrorBoundary>
                 <RecentNewsList />
             </ErrorBoundary>
@@ -17,7 +18,6 @@ export default function SideNews() {
             <ErrorBoundary>
                 <CategoryNewsList />
             </ErrorBoundary>
-
         </Box>
     )
 }

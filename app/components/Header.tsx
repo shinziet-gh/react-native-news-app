@@ -12,6 +12,7 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
 
     return (
         <Box>
+            {/* Desktop View */}
             {isDesktop ?
                 (
                     <HStack justifyContent='space-between' alignItems='center' backgroundColor='white' px="$12" py="$2" m="$5">
@@ -30,6 +31,7 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
                 )
                 :
                 (
+                    /* Tablet or Mobile View */
                     <VStack display='flex' backgroundColor='white' px="$12" py="$2" gap="$2">
                         {isMenuOpen ? (
                             <VStack>
@@ -40,17 +42,14 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
                                     >
                                         <Text fontSize="$2xl" fontWeight="700">☰</Text>
                                     </Pressable>
-
                                     <Box>
                                         <Text bold fontSize="$xl"> DailyNews</Text>
                                     </Box>
                                     <Box style={{ display: isMobile ? 'none' : 'flex', marginLeft: 'auto' }}>
                                         <SocialMedia />
                                     </Box>
-
                                 </HStack>
                                 <NavigationBar handleClick={handleTabClick} isMenuOpen={isMenuOpen} />
-
                             </VStack>
                         ) :
                             (
@@ -68,11 +67,8 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
                                         <SocialMedia />
                                     </Box>
                                 </HStack>
-
                             )}
                         <SearchBar placeholder='Search News...' barWidth='$full' handleEnter={handleNavSearchEnter} />
-
-
                     </VStack>
 
                 )
