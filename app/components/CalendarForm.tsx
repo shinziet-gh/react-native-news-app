@@ -11,7 +11,7 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     //Layout animation
-    const AnimatedHStack = Animated.createAnimatedComponent(HStack);
+    const [isResizing, setIsResizing] = useState(false);
 
     //State variables for search query
     const [searchQuery, setSearchQuery] = useState("");
@@ -56,6 +56,16 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
             document.removeEventListener("mousedown", handleClickOutside);
         }
     }, []);
+
+    useEffect(() => {
+        setIsResizing(true);
+
+        const t = setTimeout(() => {
+            setIsResizing(false);
+        }, 150);
+        return () => clearTimeout(t);
+    }, [width, height]);
+
 
     const handleDateClick = (date: DateData) => {
         try {
@@ -164,7 +174,7 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
     }
 
     return (
-        <Animated.View layout={isClose ? CurvedTransition.duration(200) : SequencedTransition} >
+        <Animated.View layout={isResizing ? undefined : isClose ? CurvedTransition.duration(200) : SequencedTransition} >
             <HStack
                 width={isTablet && isClose ? "$1" : "$full"}
                 borderTopWidth="$2"
@@ -177,12 +187,11 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
                 borderBottomLeftRadius="$lg"
                 borderRadius="$sm"
                 backgroundColor="white"
-                height={height * 0.35}
-                display="flex"
             >
                 <Pressable onPress={() => { handleClick(!isClose) }}>
                     <Text
                         p="$2"
+                        minHeight={300}
                         height="$full"
                         bgColor="black"
                         color="white"
@@ -203,7 +212,6 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
                             gap="$3"
                             paddingVertical="$6"
                             paddingLeft="$6"
-                            minHeight={height * 0.35}
                         >
                             <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
                             <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter keyword(s)..."} barWidth="$full" setKeyword={setSearchQuery} />
