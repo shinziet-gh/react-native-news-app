@@ -43,7 +43,7 @@ export default function RecentNewsList() {
     return (
         <Box>
             <Text fontWeight={400} fontSize="$lg" pb="$1.5" w="$full" borderBottomWidth='$1'>
-                Recent
+                Latest News
             </Text>
 
             <Box>
