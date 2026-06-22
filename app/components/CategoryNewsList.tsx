@@ -12,7 +12,7 @@ export default function CategoryNewsList() {
     const base_url = getEnv("BASE_URL");
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
-    const [newsArticles, setNewsArticles] = useState<{ [key: string]: Articles[] }>({});
+    const [newsArticles, setNewsArticles] = useState<{ [key: string]: typeof Articles[] }>({});
     const [isHovered, setIsHovered] = useState(false);
 
     // Loading spinner state

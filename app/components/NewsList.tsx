@@ -10,8 +10,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const base_url = getEnv("BASE_URL");
 
     //State variable to store news articles
-    const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
-    const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
+    const [newsArticles, setNewsArticles] = useState<typeof Articles[] | null>([]);
+    const [headlineStory, setHeadlineStory] = useState<typeof Articles | null>(null);
 
     // Loading spinner state
     const [isLoading, setIsLoading] = useState(true);

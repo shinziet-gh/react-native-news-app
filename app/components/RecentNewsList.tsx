@@ -11,7 +11,7 @@ export default function RecentNewsList() {
     const base_url = getEnv("BASE_URL");
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
-    const [latestNews, setLatestNews] = useState<Articles[]>([]);
+    const [latestNews, setLatestNews] = useState<typeof Articles[]>([]);
     // Loading spinner state
     const [isLoading, setIsLoading] = useState(true);
 
