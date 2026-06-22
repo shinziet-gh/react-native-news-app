@@ -1,5 +1,4 @@
-import { Box, Pressable } from "@gluestack-ui/themed";
-import * as WebBrowser from 'expo-web-browser';
+import { Box } from "@gluestack-ui/themed";
 import { useEffect, useState } from 'react';
 import { useResponsive } from '../hooks/UseResponsive';
 import NewsDetail from './NewsDetail';
@@ -54,28 +53,18 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
         }
     };
 
-    //Open URL link on new window on click
-    const handleClick = (urlLink: string) => {
-        WebBrowser.openBrowserAsync(urlLink);
-    }
-
     return (
         <Box px="$4">
             <NewsDetail news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
             {newsArticles?.map((news, index) => (
-                <Pressable
+                <Box
                     key={news?.url || index}
-                    onPress={() => {
-                        if (news?.url) {
-                            handleClick(news.url);
-                        }
-                    }}
                     my="$4"
                     marginBottom={0}
                 >
                     <NewsDetail news={news} isHeadlineStory={false} isLoading={isLoading} />
-                </Pressable>
+                </Box>
             ))}
         </Box>
     )

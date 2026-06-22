@@ -1,4 +1,5 @@
 import React from 'react'
+import * as WebBrowser from 'expo-web-browser';
 import { Button, Box, Text, HStack, VStack, Image } from "@gluestack-ui/themed";
 import { useResponsive } from '../hooks/UseResponsive';
 import { Articles } from "../articles"
@@ -6,6 +7,11 @@ import { LoadingSpinner } from './LoadingSpinner';
 
 export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonly<{ news: Articles; isHeadlineStory: boolean, isLoading: boolean }>) {
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
+
+    //Open URL link on new window on click
+    const handleClick = (urlLink: string) => {
+        WebBrowser.openBrowserAsync(urlLink);
+    }
 
     return (
         <HStack
@@ -68,7 +74,12 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
 
                         {/* READ MORE BUTTON */}
                         <Button size={isMobile || isTablet ? "md" : "lg"}
-                            alignSelf="flex-end" marginTop={'auto'} bg="black" >
+                            alignSelf="flex-end" marginTop={'auto'} bg="black"
+                            onPress={() => {
+                                if (news?.url) {
+                                    handleClick(news.url);
+                                }
+                            }}>
                             <Text
                                 color='white'
                                 fontSize={isMobile ? "$sm" : "$md"}
