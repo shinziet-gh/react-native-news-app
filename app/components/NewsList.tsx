@@ -56,7 +56,9 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     return (
         <Box px="$4">
-            {headlineStory && newsArticles ? (
+            {!isLoading && newsArticles?.length == 0 ? (
+                <NotFound />
+            ) : (
                 <>
                     <NewsDetail news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
@@ -70,8 +72,6 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                         </Box>
                     ))}
                 </>
-            ) : (
-                <NotFound />
             )}
         </Box>
     )

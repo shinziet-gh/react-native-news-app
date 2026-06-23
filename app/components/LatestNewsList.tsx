@@ -47,7 +47,10 @@ export default function RecentNewsList() {
             </Text>
 
             <Box>
-                {latestNews ? (
+                {!isLoading && latestNews.length == 0 ? (
+                    <NotFound />
+
+                ) : (
                     latestNews.map((news, index) => (
                         <Pressable key={news.url || index} onPress={() => {
                             if (news?.url) {
@@ -100,8 +103,8 @@ export default function RecentNewsList() {
                                 </Box>
                             )}
                         </Pressable>
-                    ))) : (
-                    <NotFound />
+                    ))
+
                 )}
             </Box>
         </Box>

@@ -66,7 +66,9 @@ export default function CategoryNewsList() {
                         {category.charAt(0).toUpperCase() + category.slice(1)}
                     </Text>
 
-                    {newsArticles[category]?.length > 0 ? (
+                    {!isLoading && newsArticles[category]?.length == 0 ? (
+                        <NotFound />
+                    ) : (
                         newsArticles[category]?.map((news: any, index: number) => (
                             <VStack
                                 key={news.url || index}
@@ -114,8 +116,6 @@ export default function CategoryNewsList() {
                                 </Pressable>
                             </VStack >
                         ))
-                    ) : (
-                        <NotFound />
                     )}
                 </Box>
             ))
