@@ -184,7 +184,7 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
     }
 
     return (
-        <Animated.View layout={isResizing ? undefined : isClose ? CurvedTransition.duration(200) : undefined} >
+        <Animated.View layout={isClose && !isResizing ? CurvedTransition.duration(200) : undefined} >
             <HStack
                 width={isTablet && isClose ? "$1" : "$full"}
                 borderTopWidth="$2"
