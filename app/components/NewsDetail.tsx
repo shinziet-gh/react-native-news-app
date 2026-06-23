@@ -58,7 +58,7 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
                                 color="#9CA3AF"
                                 fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$xl"}
                             >
-                                {" "}• {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                {" "}• {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString("en-GB") : ''}
                             </Text>
                         </Text>
 

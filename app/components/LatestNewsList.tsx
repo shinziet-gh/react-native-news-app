@@ -91,7 +91,7 @@ export default function RecentNewsList() {
                                             fontSize={width > 1024 && width < 1400 ? "$sm" : "$md"}
                                         >
                                             {news.source?.name || "Unknown"} • {" "}
-                                            {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString() : ''}
+                                            {news.publishedAt ? new Date(news.publishedAt).toLocaleDateString("en-GB") : ''}
                                         </Text>
                                     </VStack>
 
