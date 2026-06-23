@@ -50,13 +50,13 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
 
                         <Text
                             color="#9CA3AF"
-                            fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$xl"}
-                            fontWeight="$medium"
+                            fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$lg"}
                         >
                             {news?.source?.name || "Unknown"}
                             <Text
                                 color="#9CA3AF"
-                                fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$xl"}
+                                fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$lg"}
+                                fontWeight="$thin"
                             >
                                 {" "}• {news?.publishedAt ? new Date(news.publishedAt).toLocaleDateString("en-GB") : ''}
                             </Text>
