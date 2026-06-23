@@ -21,7 +21,7 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
                         <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
                             <NavigationBar handleClick={handleTabClick} isMenuOpen={isMenuOpen} />
                             <Box>
-                                <SearchBar placeholder='Search News...' barWidth='$full' handleEnter={handleNavSearchEnter} />
+                                <SearchBar placeholder='Search for news' barWidth='$full' handleEnter={handleNavSearchEnter} />
                             </Box>
                         </HStack>
                         <Box>

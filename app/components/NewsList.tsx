@@ -5,6 +5,7 @@ import NewsDetail from './NewsDetail';
 import { getEnv } from "../env";
 import { Articles } from "../articles";
 import { getArticles } from "../getArticles";
+import NotFound from "./NotFound";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
@@ -55,17 +56,23 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     return (
         <Box px="$4">
-            <NewsDetail news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
+            {headlineStory && newsArticles ? (
+                <>
+                    <NewsDetail news={headlineStory} isHeadlineStory={true} isLoading={isLoading} />
 
-            {newsArticles?.map((news, index) => (
-                <Box
-                    key={news?.url || index}
-                    my="$4"
-                    marginBottom={0}
-                >
-                    <NewsDetail news={news} isHeadlineStory={false} isLoading={isLoading} />
-                </Box>
-            ))}
+                    {newsArticles?.map((news, index) => (
+                        <Box
+                            key={news?.url || index}
+                            my="$4"
+                            marginBottom={0}
+                        >
+                            <NewsDetail news={news} isHeadlineStory={false} isLoading={isLoading} />
+                        </Box>
+                    ))}
+                </>
+            ) : (
+                <NotFound />
+            )}
         </Box>
     )
 }

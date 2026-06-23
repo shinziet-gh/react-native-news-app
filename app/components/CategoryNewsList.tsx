@@ -7,6 +7,7 @@ import { getEnv } from '../env';
 import { Articles } from '../articles';
 import { getArticles } from '../getArticles';
 import { LoadingSpinner } from './LoadingSpinner';
+import NotFound from './NotFound';
 
 export default function CategoryNewsList() {
     const base_url = getEnv("BASE_URL");
@@ -65,53 +66,57 @@ export default function CategoryNewsList() {
                         {category.charAt(0).toUpperCase() + category.slice(1)}
                     </Text>
 
-                    {newsArticles[category]?.map((news: any, index: number) => (
-                        <VStack
-                            key={news.url || index}
-                            marginVertical="$3"
-                            shadowOpacity={0.1}
-                            shadowRadius={6}
-                            p="$3"
-                            marginTop="$5"
-                        >
-                            <Pressable gap="$2.5" onPress={() => {
-                                if (news?.url) {
-                                    handleClick(news.url)
-                                }
-                            }}>
-                                {isLoading ? (
-                                    <LoadingSpinner />
-                                ) : (
-                                    <>
+                    {newsArticles[category]?.length > 0 ? (
+                        newsArticles[category]?.map((news: any, index: number) => (
+                            <VStack
+                                key={news.url || index}
+                                marginVertical="$3"
+                                shadowOpacity={0.1}
+                                shadowRadius={6}
+                                p="$3"
+                                marginTop="$5"
+                            >
+                                <Pressable gap="$2.5" onPress={() => {
+                                    if (news?.url) {
+                                        handleClick(news.url)
+                                    }
+                                }}>
+                                    {isLoading ? (
+                                        <LoadingSpinner />
+                                    ) : (
+                                        <>
 
-                                        <Image
-                                            source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
-                                            alt="news image"
-                                            w="$full"
-                                            h="$full"
-                                            aspectRatio={16 / 9}
-                                            resizeMode="contain"
-                                            backgroundColor='#525252'
-                                        />
-                                        <Text
-                                            bold
-                                            fontSize={"$xl"}
-                                            fontSize={width > 1024 && width < 1400 ? "$md" : "$xl"}
-                                        >
-                                            {news?.title}
-                                        </Text>
-                                        <Text
-                                            color="$gray600"
-                                            fontSize={width > 1024 && width < 1400 ? "$sm" : "$md"}
-                                        >
-                                            {news?.source?.name || "Unknown"} • {" "}
-                                            {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString("en-GB") : ''}
-                                        </Text>
-                                    </>
-                                )}
-                            </Pressable>
-                        </VStack >
-                    ))}
+                                            <Image
+                                                source={{ uri: news?.urlToImage || 'https://media.istockphoto.com/id/946051730/photo/man-reading-newspaper-high-angle-view.jpg?s=1024x1024&w=is&k=20&c=-t9Dmmxv_LqZxYrCvqOx_EHyNG6erFLamTiwOC86U3M=' }}
+                                                alt="news image"
+                                                w="$full"
+                                                h="$full"
+                                                aspectRatio={16 / 9}
+                                                resizeMode="contain"
+                                                backgroundColor='#525252'
+                                            />
+                                            <Text
+                                                bold
+                                                fontSize={"$xl"}
+                                                fontSize={width > 1024 && width < 1400 ? "$md" : "$xl"}
+                                            >
+                                                {news?.title}
+                                            </Text>
+                                            <Text
+                                                color="$gray600"
+                                                fontSize={width > 1024 && width < 1400 ? "$sm" : "$md"}
+                                            >
+                                                {news?.source?.name || "Unknown"} • {" "}
+                                                {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString("en-GB") : ''}
+                                            </Text>
+                                        </>
+                                    )}
+                                </Pressable>
+                            </VStack >
+                        ))
+                    ) : (
+                        <NotFound />
+                    )}
                 </Box>
             ))
             }
