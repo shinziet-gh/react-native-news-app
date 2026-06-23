@@ -18,9 +18,14 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
 
     //Flag for calendar display & click event
     const [showCalendar, setShowCalendar] = useState(false);
-    const calendarRef = useRef<HTMLDivElement | null>(null);
     const [fromDateClicked, setFromDateClicked] = useState(false);
     const [toDateClicked, setToDateClicked] = useState(false);
+
+    //Reference attribute
+    const calendarRef = useRef<any>(null);
+    const searchBarRef = useRef<any>(null);
+    const fromInputRef = useRef<any>(null);
+    const toInputRef = useRef<any>(null);
 
     //Declare date variables
     const dateNow = new Date();
@@ -45,7 +50,12 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
     useEffect(() => {
         //Handle click event, hides calendar when mouse goes outside the calendar component
         function handleClickOutside(event: MouseEvent) {
-            if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+
+            const isClickInsideRefElement = [calendarRef, searchBarRef, fromInputRef, toInputRef].some(ref =>
+                ref.current?.contains(event.target as Node)
+            );
+
+            if (!isClickInsideRefElement) {
                 setShowCalendar(false);
                 setFromDateClicked(false);
                 setToDateClicked(false);
@@ -174,7 +184,7 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
     }
 
     return (
-        <Animated.View layout={isResizing ? undefined : isClose ? CurvedTransition.duration(200) : SequencedTransition} >
+        <Animated.View layout={isResizing ? undefined : isClose ? CurvedTransition.duration(200) : undefined} >
             <HStack
                 width={isTablet && isClose ? "$1" : "$full"}
                 borderTopWidth="$2"
@@ -189,6 +199,7 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
                 backgroundColor="white"
             >
                 <Pressable onPress={() => { handleClick(!isClose) }}>
+                    <Text></Text>
                     <Text
                         p="$2"
                         minHeight={300}
@@ -214,22 +225,34 @@ export default function CalendarForm({ handleParams, isClose, handleClick }: Rea
                             paddingLeft="$6"
                         >
                             <Text fontWeight={400} fontSize="$lg" paddingBottom="$2">Search News</Text>
-                            <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter keyword(s)..."} barWidth="$full" setKeyword={setSearchQuery} />
-                            <Pressable onPress={() => { setShowCalendar(true); setFromDateClicked(true) }}>
+
+                            <Box ref={searchBarRef}>
+                                <SearchBar placeholder={isTablet || isMobile ? "Search Keyword" : "Enter Keyword(s) .."} barWidth="$full" setKeyword={setSearchQuery} />
+                            </Box>
+                            <Pressable ref={fromInputRef} onPress={() => { setShowCalendar(true); setFromDateClicked(true); }}>
                                 <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
                                     <InputSlot className="pl-3">
                                         <InputIcon as={CalendarDaysIcon} />
                                     </InputSlot>
-                                    <InputField size={isDesktop ? "lg" : "sm"} placeholder={startDate ? startDate?.dateString.slice(5, 10) + "-" + startDate?.dateString.slice(0, 4) : "From"} />
+                                    <InputField size={isDesktop ? "lg" : "sm"}
+                                        placeholder={
+                                            startDate ? startDate?.dateString.slice(8, 10) + "-"
+                                                + startDate?.dateString.slice(5, 7) + "-"
+                                                + startDate?.dateString.slice(0, 4)
+                                                : "From"} />
                                 </Input>
                             </Pressable>
 
-                            <Pressable onPress={() => { setShowCalendar(true); setToDateClicked(true) }}>
+                            <Pressable ref={toInputRef} onPress={() => { setShowCalendar(true); setToDateClicked(true); }}>
                                 <Input variant="outline" borderRadius="10" py="$1" px="$2" isReadOnly={true}>
                                     <InputSlot className="pl-3">
                                         <InputIcon as={CalendarDaysIcon} />
                                     </InputSlot>
-                                    <InputField size={isDesktop ? "lg" : "sm"} placeholder={endDate ? endDate?.dateString.slice(5, 10) + "-" + endDate?.dateString.slice(0, 4) : "To"} />
+                                    <InputField size={isDesktop ? "lg" : "sm"}
+                                        placeholder={
+                                            endDate ? endDate?.dateString.slice(8, 10) + "-"
+                                                + endDate?.dateString.slice(5, 7) + "-"
+                                                + endDate?.dateString.slice(0, 4) : "To"} />
                                 </Input>
                             </Pressable>
 
