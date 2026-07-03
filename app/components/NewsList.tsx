@@ -10,9 +10,11 @@ import NotFound from "./NotFound";
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
     const base_url = getEnv("BASE_URL");
 
+    console.log(base_url);
+
     //State variable to store news articles
-    const [newsArticles, setNewsArticles] = useState<typeof Articles[] | null>([]);
-    const [headlineStory, setHeadlineStory] = useState<typeof Articles | null>(null);
+    const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
+    const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
 
     // Loading spinner state
     const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +47,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             }
 
             const articles = await getArticles(apiUrl);
+
             setHeadlineStory(articles[0]);
             setNewsArticles(articles?.slice(1));
 
