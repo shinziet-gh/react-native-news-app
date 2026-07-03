@@ -13,7 +13,7 @@ const Author = z.object({
 })
 
 const ImageUrl = z.object({
-    author: z.string(),
+    urlToImage: z.string(),
 })
 
 const NewsDescription = z.object({
@@ -29,16 +29,17 @@ const PublishDate = z.object({
     date: z.string(),
 })
 
-const NewsCategory = z.enum(["general", "entertainment", "sports", "health"]);
+const NewsCategory = z.enum(["general", "business", "technology", "entertainment", "sports", "science", "health"]);
 
-export const Articles = z.object({
-    title: Title,
-    url: NewsUrl,
-    author: Author,
-    urlToImage: ImageUrl,
-    description: NewsDescription,
-    source: NewsSource,
-    publishedAt: PublishDate,
+export const ArticleSchema = z.object({
+    title: z.string(),
+    url: z.string(),
+    author: z.string(),
+    urlToImage: z.string(),
+    description: z.string(),
+    source: z.string(),
+    publishedAt: z.string(),
     category: NewsCategory
 })
 
+export type Articles = z.infer<typeof ArticleSchema>;
