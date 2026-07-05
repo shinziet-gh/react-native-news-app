@@ -4,18 +4,16 @@ import { HStack, VStack, Box, Text, Pressable } from '@gluestack-ui/themed'
 import { ArticleSchema } from '../articles';
 
 export default function NavigationBar({ handleClick, isMenuOpen }: { handleClick: (arg0: string) => void; isMenuOpen: boolean }) {
-    const [activeBtn, setActiveBtn] = useState('general');
+    const [activeBtn, setActiveBtn] = useState('home');
 
     //Get window dimensions
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     //Navigation tabs for different news categories
     const tabs = ArticleSchema.shape.category.options.map((category) => ({
-        key: category,
+        key: category === "home" ? "general" : category,
         label: category.charAt(0).toUpperCase() + category.slice(1)
     }));
-
-    console.log(tabs);
 
     //Pass category to parent via callback prop
     const handleTabPress = (tabKey: string) => {

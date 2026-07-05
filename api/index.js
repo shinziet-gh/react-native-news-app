@@ -39,7 +39,7 @@ app.get('/api/news/category=:category', async (req, res) => {
     newsapi.v2.topHeadlines({
         category: category || "general",
         language: 'en',
-        pageSize: pageSize || 10,
+        pageSize: pageSize || 40,
     }).then(response => {
         console.log(response);
         res.json(response);

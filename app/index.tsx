@@ -14,7 +14,7 @@ export default function Index() {
   const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
   //State variable to store the selected news category
-  const [params, setParams] = useState({ category: "general", searchQuery: "", fromDate: "", toDate: "" });
+  const [params, setParams] = useState({ category: "home", searchQuery: "", fromDate: "", toDate: "" });
 
   //Set category on tab click
   const handleTabClick = (category: string) => {
@@ -61,32 +61,20 @@ export default function Index() {
       {/* HEADER */}
       <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
 
-      <View style={{ flex: 1, position: "relative" }}>
-        <ScrollView>
-          <HStack px="$5" py="$5">
-            {/* SIDE NEWS */}
-            <Box
-              width={width * 0.3}
-              display={isTablet || isMobile ? 'none' : 'flex'}
-              shadowOpacity={0.1}
-              shadowRadius={6}
-              backgroundColor='white'
-            >
-              <SideNews />
-            </Box>
+      <ScrollView>
+        <HStack px="$5" py="$5" justifyContent="center">
+          {/* HEADLINE NEWS */}
+          <Box width={isDesktop ? width * 0.7 : isTablet ? width * 0.7 : width * 0.95}>
+            <ErrorBoundary>
+              <NewsList params={params} />
+            </ErrorBoundary>
+          </Box>
+        </HStack>
 
-            {/* HEADLINE NEWS */}
-            <Box width={isDesktop ? width * 0.5 : isTablet ? width * 0.7 : width * 0.95}>
-              <ErrorBoundary>
-                <NewsList params={params} />
-              </ErrorBoundary>
-            </Box>
-          </HStack>
-        </ScrollView>
+      </ScrollView>
+      {/* FILTER FORM */}
+      <SideDrawer handleParams={handleSearchParams} />
 
-        {/* FILTER FORM */}
-        <SideDrawer handleParams={handleSearchParams} />
-      </View>
 
       {/* FOOTER */}
       <View

@@ -29,7 +29,7 @@ const PublishDate = z.object({
     date: z.string(),
 })
 
-const NewsCategory = z.enum(["general", "business", "technology", "entertainment", "sports", "science", "health"]);
+const NewsCategory = z.enum(["home", "business", "technology", "entertainment", "sports", "science", "health"]);
 
 export const ArticleSchema = z.object({
     title: z.string(),
