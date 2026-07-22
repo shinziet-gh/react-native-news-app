@@ -3,7 +3,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "experiments": {
-      "baseUrl": "/react-native-news-app/"
+      "baseUrl": "/"
     }
   }
 }
