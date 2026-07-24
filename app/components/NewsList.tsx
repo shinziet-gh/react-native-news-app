@@ -8,7 +8,7 @@ import { getArticles } from "../getArticles";
 import NotFound from "./NotFound";
 
 export default function NewsPage({ params }: Readonly<{ params: { category: string; searchQuery: string; fromDate: string; toDate: string; } }>) {
-    const base_url = getEnv("BASE_URL");
+    const api_url = getEnv("API_URL");
 
     //State variable to store news articles
     const [newsArticles, setNewsArticles] = useState<typeof Articles[] | null>([]);
@@ -31,7 +31,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
         try {
             //Fetch news by category
-            let apiUrl = `${base_url}/api/news/category=${category}`;
+            let apiUrl = `${api_url}/api/news/category=${category}`;
 
             //Else, Fetch news by search query when triggered
             if (searchQuery) {
@@ -41,7 +41,7 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
                     to: toDate ?? ""
                 });
 
-                apiUrl = `${base_url}/api/news/search?${params}`;
+                apiUrl = `${api_url}/api/news/search?${params}`;
             }
 
             const articles = await getArticles(apiUrl);

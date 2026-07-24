@@ -9,7 +9,7 @@ import { useResponsive } from '../hooks/UseResponsive';
 import NotFound from './NotFound';
 
 export default function RecentNewsList() {
-    const base_url = getEnv("BASE_URL");
+    const api_url = getEnv("API_URL");
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     const [latestNews, setLatestNews] = useState<typeof Articles[]>([]);
@@ -18,7 +18,7 @@ export default function RecentNewsList() {
 
     const fetchLatestNews = async () => {
         try {
-            const apiUrl = `${base_url}/api/news/newest`;
+            const apiUrl = `${api_url}/api/news/newest`;
 
             const articles = await getArticles(apiUrl);
             setLatestNews(articles);

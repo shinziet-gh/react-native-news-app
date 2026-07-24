@@ -10,7 +10,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 import NotFound from './NotFound';
 
 export default function CategoryNewsList() {
-    const base_url = getEnv("BASE_URL");
+    const api_url = getEnv("API_URL");
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     const [newsArticles, setNewsArticles] = useState<{ [key: string]: typeof Articles[] }>({});
@@ -31,7 +31,7 @@ export default function CategoryNewsList() {
             const params = new URLSearchParams({
                 pageSize: "2"
             });
-            const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
+            const apiUrl = `${api_url}/api/news/category=${category}?${params}`;
 
             const articles = await getArticles(apiUrl);
             setNewsArticles(prev => ({
