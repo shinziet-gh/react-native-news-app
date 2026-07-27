@@ -16,13 +16,10 @@ export default function Header({ handleTabClick, handleNavSearchEnter }: { reado
             {isDesktop ?
                 (
                     <HStack justifyContent='space-between' alignItems='center' backgroundColor='white' px="$12" py="$2" m="$5">
-                        <Text bold fontSize="$xl"> DailyNews</Text>
+                        <Text flex={1} bold fontSize="$xl"> DailyNews</Text>
 
-                        <HStack flex={1} justifyContent='space-evenly' alignItems='center'>
+                        <HStack flex={5} justifyContent='flex-start' alignItems='center'>
                             <NavigationBar handleClick={handleTabClick} isMenuOpen={isMenuOpen} />
-                            <Box>
-                                <SearchBar placeholder='Search for news' barWidth='$full' handleEnter={handleNavSearchEnter} />
-                            </Box>
                         </HStack>
                         <Box>
                             <SocialMedia />

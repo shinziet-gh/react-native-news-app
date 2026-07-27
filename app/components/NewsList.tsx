@@ -11,8 +11,8 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
     const api_url = getEnv("API_URL");
 
     //State variable to store news articles
-    const [newsArticles, setNewsArticles] = useState<typeof Articles[] | null>([]);
-    const [headlineStory, setHeadlineStory] = useState<typeof Articles | null>(null);
+    const [newsArticles, setNewsArticles] = useState<Articles[] | null>([]);
+    const [headlineStory, setHeadlineStory] = useState<Articles | null>(null);
 
     // Loading spinner state
     const [isLoading, setIsLoading] = useState(true);
@@ -30,9 +30,12 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
 
     const fetchNews = async (category: string, searchQuery: string, fromDate: string, toDate: string) => {
         try {
-            //Fetch news by category
+
             let apiUrl = `${api_url}/api/news/category=${category}`;
 
+            if (category == "top") {
+                apiUrl = `${api_url}/api/news/newest`
+            }
             //Else, Fetch news by search query when triggered
             if (searchQuery) {
                 const params = new URLSearchParams({
@@ -45,6 +48,9 @@ export default function NewsPage({ params }: Readonly<{ params: { category: stri
             }
 
             const articles = await getArticles(apiUrl);
+
+            console.log(articles);
+
             setHeadlineStory(articles[0]);
             setNewsArticles(articles?.slice(1));
 

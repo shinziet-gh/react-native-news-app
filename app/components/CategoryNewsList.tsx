@@ -22,7 +22,8 @@ export default function CategoryNewsList() {
     //List of categories
     const categories = [
         'entertainment',
-        'sports',
+        'sport',
+        'travel'
     ];
 
     const fetchNewsByCategory = async (category: string) => {
@@ -34,9 +35,10 @@ export default function CategoryNewsList() {
             const apiUrl = `${api_url}/api/news/category=${category}?${params}`;
 
             const articles = await getArticles(apiUrl);
+
             setNewsArticles(prev => ({
                 ...prev,
-                [category]: articles
+                [category]: articles.slice(0, 2)
             }));
 
             setIsLoading(false); //Hide loading spinner

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useResponsive } from '../hooks/UseResponsive';
 import { HStack, VStack, Box, Text, Pressable } from '@gluestack-ui/themed'
+import { NewsCategory } from '../articles';
 
 export default function NavigationBar({ handleClick, isMenuOpen }: { handleClick: (arg0: string) => void; isMenuOpen: boolean }) {
-    const [activeBtn, setActiveBtn] = useState('general');
+    const [activeBtn, setActiveBtn] = useState('top');
 
     //Get window dimensions
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     //Navigation tabs for different news categories
-    const tabs = [
-        { key: 'general', label: 'Top News' },
-        { key: 'business', label: 'Business' },
-        { key: 'health', label: 'Health' },
-        { key: 'science', label: 'Science' },
-        { key: 'technology', label: 'Technology' },
-    ];
+    const tabs = NewsCategory.options.map((category: string) => ({
+        key: category,
+        label: category == 'top' ? 'Top News' : category.charAt(0).toUpperCase() + category.slice(1)
+    }));
 
     //Pass category to parent via callback prop
     const handleTabPress = (tabKey: string) => {

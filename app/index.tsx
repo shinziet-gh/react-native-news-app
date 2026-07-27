@@ -14,7 +14,7 @@ export default function Index() {
   const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
   //State variable to store the selected news category
-  const [params, setParams] = useState({ category: "general", searchQuery: "", fromDate: "", toDate: "" });
+  const [params, setParams] = useState({ category: "home", searchQuery: "", fromDate: "", toDate: "" });
 
   //Set category on tab click
   const handleTabClick = (category: string) => {
@@ -84,8 +84,6 @@ export default function Index() {
           </HStack>
         </ScrollView>
 
-        {/* FILTER FORM */}
-        <SideDrawer handleParams={handleSearchParams} />
       </View>
 
       {/* FOOTER */}
