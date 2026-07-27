@@ -10,7 +10,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 import NotFound from './NotFound';
 
 export default function CategoryNewsList() {
-    const base_url = getEnv("BASE_URL");
+    const api_url = getEnv("API_URL");
     const { width, height, isMobile, isTablet, isDesktop } = useResponsive();
 
     const [newsArticles, setNewsArticles] = useState<{ [key: string]: typeof Articles[] }>({});
@@ -22,7 +22,8 @@ export default function CategoryNewsList() {
     //List of categories
     const categories = [
         'entertainment',
-        'sports',
+        'sport',
+        'travel'
     ];
 
     const fetchNewsByCategory = async (category: string) => {
@@ -31,12 +32,13 @@ export default function CategoryNewsList() {
             const params = new URLSearchParams({
                 pageSize: "2"
             });
-            const apiUrl = `${base_url}/api/news/category=${category}?${params}`;
+            const apiUrl = `${api_url}api/news/category=${category}?${params}`;
 
             const articles = await getArticles(apiUrl);
+
             setNewsArticles(prev => ({
                 ...prev,
-                [category]: articles
+                [category]: articles.slice(0, 2)
             }));
 
             setIsLoading(false); //Hide loading spinner

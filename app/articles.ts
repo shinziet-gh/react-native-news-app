@@ -29,17 +29,19 @@ const PublishDate = z.object({
     date: z.string(),
 })
 
-const NewsCategory = z.enum(["home", "business", "technology", "entertainment", "sports", "science", "health"]);
+// business, sport, rugby, entertainment, world, technology, lifestyle, travel
+
+export const NewsCategory = z.enum(["top", "business", "lifestyle", "technology", "world"]);
 
 export const ArticleSchema = z.object({
     title: z.string(),
     url: z.string(),
-    author: z.string(),
+    author: z.string().optional(),
     urlToImage: z.string(),
     description: z.string(),
-    source: z.string(),
+    source: z.string().optional(),
     publishedAt: z.string(),
-    category: NewsCategory
+    category: NewsCategory.optional()
 })
 
 export type Articles = z.infer<typeof ArticleSchema>;

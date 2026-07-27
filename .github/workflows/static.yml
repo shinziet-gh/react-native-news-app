@@ -28,7 +28,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     env:
-      BASE_URL: ${{ vars.BASE_URL }}
+      PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH }}
+      API_URL: ${{ vars.API_URL }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -61,20 +61,30 @@ export default function Index() {
       {/* HEADER */}
       <Header handleTabClick={handleTabClick} handleNavSearchEnter={handleNavSearchEnter}></Header>
 
-      <ScrollView>
-        <HStack px="$5" py="$5" justifyContent="center">
-          {/* HEADLINE NEWS */}
-          <Box width={isDesktop ? width * 0.7 : isTablet ? width * 0.7 : width * 0.95}>
-            <ErrorBoundary>
-              <NewsList params={params} />
-            </ErrorBoundary>
-          </Box>
-        </HStack>
+      <View style={{ flex: 1, position: "relative" }}>
+        <ScrollView>
+          <HStack px="$5" py="$5">
+            {/* SIDE NEWS */}
+            <Box
+              width={width * 0.3}
+              display={isTablet || isMobile ? 'none' : 'flex'}
+              shadowOpacity={0.1}
+              shadowRadius={6}
+              backgroundColor='white'
+            >
+              <SideNews />
+            </Box>
 
-      </ScrollView>
-      {/* FILTER FORM */}
-      <SideDrawer handleParams={handleSearchParams} />
+            {/* HEADLINE NEWS */}
+            <Box width={isDesktop ? width * 0.5 : isTablet ? width * 0.7 : width * 0.95}>
+              <ErrorBoundary>
+                <NewsList params={params} />
+              </ErrorBoundary>
+            </Box>
+          </HStack>
+        </ScrollView>
 
+      </View>
 
       {/* FOOTER */}
       <View

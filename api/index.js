@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import serverless from 'serverless-http';
 import NewsAPI from 'newsapi';
+import { XMLParser } from "fast-xml-parser";
 
 //Load environment variables
 dotenv.config();
@@ -34,31 +35,63 @@ app.get('/test', (req, res) => {
 //To query /v2/top-headlines by category
 app.get('/api/news/category=:category', async (req, res) => {
     const category = req.params.category;
-    const pageSize = req.query.pageSize;
 
-    newsapi.v2.topHeadlines({
-        category: category || "general",
-        language: 'en',
-        pageSize: pageSize || 40,
-    }).then(response => {
-        console.log(response);
-        res.json(response);
+    const response = await fetch(
+        `https://www.nzherald.co.nz/arc/outboundfeeds/rss/section/${category}/?outputType=xml&_website=nzh`
+    );
+
+    const xml = await response.text();
+
+    const parser = new XMLParser({
+        ignoreAttributes: false,
+        attributeNamePrefix: "",
     });
 
+    const rss = parser.parse(xml);
+
+    const articles = rss.rss.channel.item.map((item) => ({
+        title: item.title,
+        description: item.description,
+        url: item.link,
+        author: item["dc:creator"],
+        source: "NZ Herald",
+        publishedAt: item.pubDate,
+        urlToImage: Array.isArray(item["media:content"])
+            ? item["media:content"][0].url
+            : item["media:content"]?.url,
+    }));
+
+    res.json(articles);
 });
 
 //To query /v2/everything by published date
 app.get('/api/news/newest', async (req, res) => {
-    newsapi.v2.everything({
-        language: 'en',
-        pageSize: 2,
-        sortBy: 'publishedAt',
-        sources: 'wired, cnn, nbc-news',
-    }).then(response => {
-        console.log(response);
-        res.json(response);
-    })
+    const response = await fetch(
+        "https://www.nzherald.co.nz/arc/outboundfeeds/rss/curated/78/?outputType=xml&_website=nzh"
+    );
 
+    const xml = await response.text();
+
+    const parser = new XMLParser({
+        ignoreAttributes: false,
+        attributeNamePrefix: "",
+    });
+
+    const rss = parser.parse(xml);
+
+    const articles = rss.rss.channel.item.map((item) => ({
+        title: item.title,
+        description: item.description,
+        url: item.link,
+        author: item["dc:creator"],
+        source: "NZ Herald",
+        publishedAt: item.pubDate,
+        urlToImage: Array.isArray(item["media:content"])
+            ? item["media:content"][0].url
+            : item["media:content"]?.url,
+    }));
+
+    res.json(articles);
 });
 
 //To query /v2/everything by search query AND/OR dates

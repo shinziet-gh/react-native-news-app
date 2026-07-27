@@ -52,7 +52,7 @@ export default function NewsDetail({ news, isHeadlineStory, isLoading }: Readonl
                             color="#9CA3AF"
                             fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$lg"}
                         >
-                            {news?.source?.name || "Unknown"}
+                            {news?.source || "Unknown"}
                             <Text
                                 color="#9CA3AF"
                                 fontSize={isMobile ? "$sm" : isTablet ? "$md" : "$lg"}
