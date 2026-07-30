@@ -110,7 +110,7 @@ export default function CategoryNewsList() {
                                                 color="$gray600"
                                                 fontSize={width > 1024 && width < 1400 ? "$sm" : "$md"}
                                             >
-                                                {news?.source?.name || "Unknown"} • {" "}
+                                                {news?.source || "Unknown"} • {" "}
                                                 {news?.publishedAt ? new Date(news?.publishedAt).toLocaleDateString("en-GB") : ''}
                                             </Text>
                                         </>
